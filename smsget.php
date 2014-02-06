@@ -67,18 +67,28 @@ if( is_array($dat) && count($dat))
 		
 		print_r( $r );
 		
+		$r['body'] = trim($r['body']);
+
 		echo $r['remote_number'] . " say " . $r['body'] . "\n";
 
 		$words = explode(' ', strtolower( $r['body'] ));
+		//We call the first word the 'command'
 		$cmd = $words[0]; 
+
+		$service = $smspi->serviceGet( $cmd );		
 
 		echo "cmd=$cmd\n";
 
+
 		//Todo : big things here
-		if(is_dir( __DIR__ . "/$cmd"))
+		if( $service )
 		{
 			$cc = new cURL();	
-			$html = $cc->get( "http://127.0.0.1/sms/$cmd/?num=".$r['remote_number'] . "&body=" . $r['body'] );
+			
+			//$URL = "http://127.0.0.1/sms/$cmd/?num=".$r['remote_number'] . "&body=" . $r['body']
+			$URL = "http://127.0.0.1/sms/" . $service['url'] . "/?num=".$r['remote_number'] . "&body=" . urlencode( $r['body'] );
+			
+			$html = $cc->get( $URL );
 			$httpCode = $cc->httpCode();
 			$content_type = $cc->contentType();
 			$content_length = $cc->contentLength();
@@ -88,15 +98,19 @@ if( is_array($dat) && count($dat))
 				$text = $html;
 				echo "$text\n";
 			}else{
-				$text = "SMS Error";
+				$text = "SMS Error $httpCode";
 			}
 
 		}
 		else
 		{
-			shuffle( $errors );
-			$text = $errors[0];
+			$text = $smspi->error_message();
+			$text = "Service not found";
 		}
+
+
+
+		//Send the computed reply//
 		echo "reply : $text\n";
 
 		$response = '';	

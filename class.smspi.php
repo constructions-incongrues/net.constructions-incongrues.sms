@@ -19,6 +19,40 @@ class smspi {
 
 
 	/**
+	 * Return a funny error messages
+	 */
+	function error_message()
+	{
+		$errors = Array();
+		$errors[] = "on se connait ?";
+		$errors[] = "?";
+		$errors[] = "va te faire foutre";
+		$errors[] = "cette fois c'est fini";
+		$errors[] = "n'insiste pas";
+		$errors[] = "ouais c'est ca";
+		$errors[] = "comment ca ?";
+		$errors[] = "c'est ton nouveau numero ?";
+		$errors[] = "kevin ?";
+		$errors[] = "c'est une blague ?";
+		$errors[] = "laisse tomber";
+		$errors[] = "lol";
+		$errors[] = "ca va toi ? Bisou";
+		$errors[] = "ce soir je peux pas";
+		$errors[] = "ok";
+
+		// bonus //
+		$errors[] = "Wesh tes con ou cest comment ? Tes sur que tu parle a la bonne personne ??";
+		//$errors[] = "Heiin ok";
+		$errors[] = "De quoii ?";
+		$errors[] = "Lol quoii ?";
+		//$errors[] = "Wesh geoffrezzz ca va ou quoii ??";
+		shuffle($errors);
+		return $errors[0];
+	}
+
+
+
+	/**
 	 * Save sms's to db
 	 * @return [type] [description]
 	 */
@@ -150,7 +184,11 @@ class smspi {
  	function serviceRegister(){}
  	*/
  
-
+ 	/**
+ 	 * Return one service record for a given service name, or false if the service is not found.
+ 	 * @param  string $serviceName [description]
+ 	 * @return [type]              [description]
+ 	 */
  	function serviceGet( $serviceName="" )
  	{
  		$serviceName = trim( $serviceName );

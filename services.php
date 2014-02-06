@@ -26,7 +26,7 @@ while( $r=$q->fetch_assoc() )
 	echo "\t";
 	echo $r['name'];
 	echo "\t";
-	echo $r['url'];	
+	echo "<a href='" . $r['url'] . "'>" . $r['url'] . "</a>";	
 	echo "\t";
 	echo $r['comment'];
 	echo "\n";
