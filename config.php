@@ -12,5 +12,7 @@ $dbname = 'sms';
 //sqlitedb file
 //$dbfile = 'smsdb.db';
 
+$sender = '07';
+
 //modem path
 $modem = "/dev/ttyUSB0";

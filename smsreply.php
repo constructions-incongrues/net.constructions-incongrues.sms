@@ -8,6 +8,7 @@ require "class.smspi.php";
 include __DIR__."/config.php";
 include __DIR__."/sms_errors.php";
 
+/*
 $start = time();
 
 $db = new mysqli( $dbhost, $dbuser, $dbpass , $dbname );
@@ -62,3 +63,4 @@ foreach( $dat as $k=>$r ){
 
 
 die("done in ".(time() - $start)." second(s)\n" );
+*/
