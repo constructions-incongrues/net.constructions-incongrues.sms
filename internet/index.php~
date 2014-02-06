@@ -1,0 +1,8 @@
+<?php
+/**
+ * Camion script, return pouet pouet
+ */
+header('Content-Type: text/html; charset=ISO-8859-1');
+
+die("pouet pouet");
+

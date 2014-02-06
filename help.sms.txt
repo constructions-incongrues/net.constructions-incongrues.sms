@@ -1,0 +1,52 @@
+[Gammu version 1.32.0 built 12:46:32 on Jun 29 2012 using GCC 4.7]
+
+Gammu commands, topic: SMS and EMS
+
+getsmsc [start [stop]]
+setsmsc location number
+getsms folder start [stop]
+deletesms folder start [stop]
+deleteallsms folder
+getsmsfolders
+getallsms -pbk
+geteachsms -pbk
+savesms TEXT [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num][-inputunicode][-16bit][-flash][-len len][-autolen len][-unicode][-enablevoice][-disablevoice][-enablefax][-disablefax][-enableemail][-disableemail][-voidsms][-replacemessages ID][-replacefile file][-text msgtext][-textutf8 msgtext]
+savesms RINGTONE file [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num][-long][-scale]
+savesms OPERATOR file [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num][-netcode netcode][-biglogo]
+savesms CALLER file [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms PICTURE file [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num][-text text][-unicode][-alcatelbmmi]
+savesms ANIMATION frames file1 file2... [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms MMSINDICATOR URL Title Sender [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms WAPINDICATOR URL Title [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms BOOKMARK file location [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms WAPSETTINGS file location DATA|GPRS [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms MMSSETTINGS file location  [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms CALENDAR file location [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms TODO file location [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms VCARD10|VCARD21 file SM|ME location [-nokia][-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num]
+savesms PROFILE [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num][-name name][-bitmap bitmap][-ringtone ringtone]
+savesms EMS [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num][-unicode][-16bit][-format lcrasbiut][-text text][-unicodefiletext file][-defsound ID][-defanimation ID][-tone10 file][-tone10long file][-tone12 file][-tone12long file][-toneSE file][-toneSElong file][-fixedbitmap file][-variablebitmap file][-variablebitmaplong file][-animation frames file1 ...][-protected number]
+savesms SMSTEMPLATE [-folder id][-unread][-read][-unsent][-sent][-sender number][-smsname name][-smscset number][-smscnumber number][-reply][-maxsms num][-unicode][-text text][-unicodefiletext file][-defsound ID][-defanimation ID][-tone10 file][-tone10long file][-tone12 file][-tone12long file][-toneSE file][-toneSElong file][-variablebitmap file][-variablebitmaplong file][-animation frames file1 ...]
+sendsms TEXT destination [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num][-inputunicode][-16bit][-flash][-len len][-autolen len][-unicode][-enablevoice][-disablevoice][-enablefax][-disablefax][-enableemail][-disableemail][-voidsms][-replacemessages ID][-replacefile file][-text msgtext][-textutf8 msgtext]
+sendsms RINGTONE destination file [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num][-long][-scale]
+sendsms OPERATOR destination file [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num][-netcode netcode][-biglogo]
+sendsms CALLER destination file [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms PICTURE destination file [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num][-text text][-unicode][-alcatelbmmi]
+sendsms ANIMATION destination frames file1 file2... [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms MMSINDICATOR destination URL Title Sender [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms WAPINDICATOR destination URL Title [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms BOOKMARK destination file location [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms WAPSETTINGS destination file location DATA|GPRS [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms MMSSETTINGS destination file location [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms CALENDAR destination file location [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms TODO destination file location [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms VCARD10|VCARD21 destination file SM|ME location [-nokia][-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num]
+sendsms PROFILE destination [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num][-name name][-bitmap bitmap][-ringtone ringtone]
+sendsms EMS destination [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num][-unicode][-16bit][-format lcrasbiut][-text text][-unicodefiletext file][-defsound ID][-defanimation ID][-tone10 file][-tone10long file][-tone12 file][-tone12long file][-toneSE file][-toneSElong file][-fixedbitmap file][-variablebitmap file][-variablebitmaplong file][-animation frames file1 ...][-protected number]
+sendsms SMSTEMPLATE destination [-report][-validity HOUR|6HOURS|DAY|3DAYS|WEEK|MAX][-save [-folder number]][-smscset number][-smscnumber number][-reply][-maxsms num][-unicode][-text text][-unicodefiletext file][-defsound ID][-defanimation ID][-tone10 file][-tone10long file][-tone12 file][-tone12long file][-toneSE file][-toneSElong file][-variablebitmap file][-variablebitmaplong file][-animation frames file1 ...]
+displaysms ... (options like in sendsms)
+addsmsfolder name
+backupsms file [-yes|-all]
+restoresms file [-yes]
+addsms folder file [-yes]
+nokiagett9
