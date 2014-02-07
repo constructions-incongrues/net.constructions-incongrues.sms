@@ -105,7 +105,7 @@ if( is_array($dat) && count($dat))
 		else
 		{
 			$text = $smspi->error_message();
-			$text = "Service not found";
+			//$text = "Service not found";
 		}
 
 
