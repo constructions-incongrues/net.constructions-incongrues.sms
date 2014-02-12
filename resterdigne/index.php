@@ -1,3 +1,3 @@
 <?php
 $database = file('http://resterdigne.net/database.txt');
-echo $database[array_rand($database)];
+echo utf8_decode($database[array_rand($database)]);
