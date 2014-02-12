@@ -1,3 +1,3 @@
 <?php
 $database = file('http://resterdigne.net/database.txt');
-echo utf8_decode($database[array_rand($database)]);
+echo htmlspecialchars_decode(utf8_decode($database[array_rand($database)]), ENT_QUOTES);
