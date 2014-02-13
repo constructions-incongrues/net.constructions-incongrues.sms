@@ -5,17 +5,23 @@
  */
 header('Content-Type: text/html; charset=utf-8');
 
+include "../class.smspi.php";
+include "../config.php";
 
-$g = glob("../*");
+$db = new mysqli( $dbhost, $dbuser, $dbpass , $dbname );
+if(!$db)die("No database connection");
 
-$cmds=Array();
-foreach($g as $k=>$f)
-{
-	//echo "<li>$f";
-	if( is_dir( $f ) )
-	{
-		$cmds[]=basename($f);
-	}
+
+// Get the list of services //
+$sql = "SELECT name FROM services WHERE 1 order by name;";
+$q = $db->query( $sql ) or die( $sql );
+
+$cmds = Array();
+
+while( $r = $q->fetch_assoc() ) {
+	$cmds[] = $r['name'];
 }
 
-die(implode(" ", $cmds));
+
+die( implode(" " , $cmds ) );
+
