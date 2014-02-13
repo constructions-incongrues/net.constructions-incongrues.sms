@@ -7,7 +7,6 @@ require "class.gammu.php";
 require "class.smspi.php";
 require "class.curl.php";
 include __DIR__."/config.php";
-include __DIR__."/sms_errors.php";
 
 $start = time();
 
@@ -22,13 +21,6 @@ if(!is_writable( $modem ))
 
 $gammu = new gammu();
 $smspi = new smspi( $db );
-
-//Identify
-//$gammu->Identify( $identify );
-//die( print_r( $identify ));
-//
-//$detect = $gammu->detect();
-//die( print_r( $detect ));
 
 echo date('c') . "\n"; 
 
