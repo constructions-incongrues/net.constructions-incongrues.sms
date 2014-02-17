@@ -5,7 +5,7 @@
 | Contact     : stieven.kalengkian@gmail.com
 | Website     : www.sleki.org - My Blog http://stieven.glowciptamedia.com/
 | Version     : 3.0
-| Last Update : Bill, 2014
+| Last Update : Jambonbill, 2014
 ------------------------------------------*/
 
 class gammu {
@@ -150,6 +150,14 @@ class gammu {
 		$respon = $this->gammu_exec("--deleteallsms 1");
 		if (eregi("OK",$respon)) { return 1; } else { return 0; }		
 	}
+
+
+	function Version(){
+		$respon = $this->gammu_exec("--version");
+		//if (eregi("OK",$respon)) { return 1; } else { return 0; }
+		return $respon;	
+	}
+
 
 
 	function phoneBook($mem = 'ME')

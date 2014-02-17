@@ -25,6 +25,9 @@ $list[]= "C'est l'histoire d'un mec qui rentre dans un cafe : et plouf";
 
 $list[]= "Pourquoi les femmes aiment lecher les montres ?\nPar ce qu'un tictac contient moins de 2 calories";
 
+$list[]= "Boire au volant, c'est pas bien ! Faut boire à la bouteille";
+
+$list[]= "Que fait un éléphant dans un orchestre ?\nDe la trompette !";
 
 
 shuffle( $list );

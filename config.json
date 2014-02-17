@@ -1,0 +1,12 @@
+{
+	"db":{
+		"host": "127.0.0.1",
+		"user": "cron",
+ 		"pass": "robotix",
+		"name": "sms"
+	},
+	"sender": "0781054462",
+	"gammu": "/usr/bin/gammu",
+	"modem" : "/dev/ttyUSB0",
+	"pin":"1234"
+}
