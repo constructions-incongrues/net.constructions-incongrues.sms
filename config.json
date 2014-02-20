@@ -8,5 +8,5 @@
 	"sender": "0781054462",
 	"gammu": "/usr/bin/gammu",
 	"modem" : "/dev/ttyUSB0",
-	"pin":"1234"
+	"pin":"1233"
 }

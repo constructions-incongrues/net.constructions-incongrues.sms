@@ -2,7 +2,7 @@
 /**
  * Admin controller
  */
-header('Content-Type: text/html; charset=ISO-8859-1');
+header('Content-Type: text/html; charset=utf-8');
 
 require "../class.smspi.php";
 $config = json_decode( file_get_contents( __DIR__ . '/../config.json') );

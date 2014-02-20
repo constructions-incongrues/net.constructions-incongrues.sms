@@ -5,17 +5,16 @@
  */
 header('Content-Type: text/html; charset=utf-8');
 
-include "../class.smspi.php";
-include "../config.php";
+include __DIR__ . "/../../class.smspi.php";
 
-require "../class.smspi.php";
+//require "../class.smspi.php";
 
-$config = json_decode( file_get_contents( __DIR__ . '/../config.json') );
+$config = json_decode( file_get_contents( __DIR__ . '/../../config.json') );
 $smspi = new smspi( $config );
 
 // Get the list of services //
 $sql = "SELECT name FROM services WHERE 1 order by name;";
-$q = $db->query( $sql ) or die( $sql );
+$q = $smspi->db->query( $sql ) or die( $sql );
 
 $cmds = Array();
 

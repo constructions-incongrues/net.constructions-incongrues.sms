@@ -16,13 +16,13 @@ class smspi {
 		} else {
 			$this->config = $conf;
 		}
-		$this->dbConnect();
+		@$this->dbConnect();
 	}
 
 
 	private function dbConnect() {	
 		$this->db = new mysqli( $this->config->db->host, $this->config->db->user, $this->config->db->pass , $this->config->db->name );
-		if(!$this->db)die("No database connection");
+		//if(!$this->db)die("No database connection");
 		return $this->db;
 	}
 
