@@ -31,7 +31,7 @@ while( $r = $q->fetch_assoc() )
 {
 	//print_r( $r );
 	echo "<tr id=" . $r['id'] . ">";
-	echo "<td>" . $r['number'];
+	echo "<td title='" . $smspi->numberName($r['number']) . "'>" . $r['number'];
 	echo "<td>" . $r['message'];
 	$r['time'] = str_replace( date('Y-m-d'), '', $r['time'] );
 	echo "<td width=150>" . $r['time'];

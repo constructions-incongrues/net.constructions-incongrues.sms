@@ -54,12 +54,14 @@ class smspi {
 		$body   = trim( $r['body'] );
 
 		$sql = "INSERT INTO inbox ( ID, sent, coding, remote_number, status, body ) ";
-		$sql.= " VALUES ( '$ID','$sent', '$coding', '$remote', 'unread', '" . $this->db->escape_string($body) . "' );";
+		$sql.= " VALUES ( '$ID','$sent', '$coding', '$remote', 'unread', '" . $this->db->escape_string($body) . "' ) ";
+		$sql.= " ON DUPLICATE KEY UPDATE sent=NOW();";
+		
 		
 		//echo "$sql\n";
 		$this->db->query( $sql ) or $this->error( $this->db->error );
 		
-		$this->registerNumber( $r['remote_number'] );
+		$this->numberAdd( $r['remote_number'] );
 
 		return true;
 	}
@@ -71,7 +73,7 @@ class smspi {
 	 * @param  string $phoneNumber [description]
 	 * @return bool              [description]
 	 */
-	function registerNumber( $phoneNumber = "" )
+	function numberAdd( $phoneNumber = "" )
 	{
 		$phoneNumber = trim( $phoneNumber );
 
@@ -86,6 +88,19 @@ class smspi {
 		return true;
 	}
 
+	/**
+	 * Return the name of the owner of the given phoneNumber
+	 * @return [type] [description]
+	 */
+	function numberName( $num )
+	{
+		$num = trim( $num );
+		$sql = "SELECT name FROM phonebook WHERE phonenumber LIKE '" . $this->db->escape_string( $num ) . "';";
+		$q = $this->db->query( $sql ) or $this->error( $this->db->error );
+		$r = $q->fetch_assoc();
+		if($q->num_rows)return $r['name'];
+		return false;
+	}
 
 
 	/**
@@ -187,7 +202,7 @@ class smspi {
 	function logSent( $remote_number='', $message='' , $response='' )
 	{
 		$remote_number = trim( $remote_number );
-		$text = trim( $text );
+		$message = trim( $message );
 		$response = trim( $response );
 
 		$sql = "INSERT INTO log_sent ( number, message, response, time) ";
@@ -322,9 +337,65 @@ class smspi {
 		$errors[] = "De quoii ?";
 		$errors[] = "Lol quoii ?";
 		//$errors[] = "Wesh geoffrezzz ca va ou quoii ??";
-		shuffle($errors);
+		shuffle( $errors );
 		return $errors[0];
 	}
+
+
+	//Queue
+	
+	/**
+	 * Add a message to the queue
+	 * @param  string $number [description]
+	 * @param  string $body   [description]
+	 * @return [type]         [description]
+	 */
+	function queue_add($number='',$body='', $datetime='')
+	{
+		$number=trim($number);
+		$body = trim($body);
+
+		if(!$number)return false;
+		if(!$body)return false;
+		
+		$date = 'NOW()';
+
+		$sql = "INSERT INTO queue (q_number, q_body, q_sendtime) ";
+		$sql.= "VALUES ('" . $this->db->escape_string( $number ) . "', '".$this->db->escape_string( $body )."', $date );";
+		
+		$this->db->query( $sql ) or die( $this->db->error );
+		
+		return $this->db->insert_id;
+	}
+
+
+	/**
+	 * Return the full msg queue
+	 * @return [type] [description]
+	 */
+	function queue_get(){
+
+		$sql = "SELECT * FROM queue WHERE 1;";
+		$q = $this->db->query( $sql ) or die( $this->db->error );
+		$DAT = Array();
+		while($r=$q->fetch_assoc()){
+			$DAT[$r['q_id']] = $r;
+		}
+		return $DAT;
+	}
+
+	/**
+	 * Delete one message from the queue
+	 * @param  integer $id [description]
+	 * @return [type]      [description]
+	 */
+	function queue_del($id=0)
+	{
+		$sql = "DELETE FROM queue WHERE q_id=$id LIMIT 1;";
+		$q = $this->db->query( $sql ) or die( $this->db->error );
+		return true;
+	}
+
 
 }
 

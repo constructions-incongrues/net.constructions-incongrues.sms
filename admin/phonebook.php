@@ -32,22 +32,32 @@ while( $r = $q->fetch_assoc() )
 	//echo "<td>" . $r['id'];
 	echo "<td>" . $r['phonenumber'];
 	echo "<td>" . $r['name'];	
+	if(!$r['calls'])$r['calls']='';
 	echo "<td>" . $r['calls'];
 	if(preg_match("/0000/", $r['lastcall']))$r['lastcall']='';
 	echo "<td>" . $r['lastcall'];
-	//echo "\n";
+	echo "<td><a href=# onclick=test('" . $r['phonenumber'] . "')>test</a></td>";
+	echo "</tr>\n";
 } 
 
 echo "</tbody>";
 echo "</table>";
-
 ?>
+
+<div id='more'></div>
+
 <a href='#' class='btn btn-default' onclick='addNumber()'> New phone number</a>
 <script>
 function addNumber(){
 	var nn = prompt("Enter new number");
 	if(!nn)return false;
-	$("#main").load("controller.php",{'do':'addNumber','number':nn});
+	$("#main").load("controller.php",{'do':'numberAdd','number':nn});
+}
+
+function test(num){
+	var msg=prompt("Enter message");
+	if(!msg)return false;
+	$("#more").load("controller.php",{'do':'numberTest', 'number':num, 'body':msg});
 }
 </script>
 

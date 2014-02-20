@@ -2,6 +2,8 @@
 /**
  * Get sms's, save to DB, process the queue, clear the messages
  */
+header('Content-Type: text/html; charset=utf-8');
+
 require "class.gammu.php";
 require "class.smspi.php";
 require "class.curl.php";
@@ -57,9 +59,7 @@ else
 
 
 
-
-
-//Generating and sending replies//
+// Generating replies and put them in the queue //
 $dat = $smspi->getUnread();
 
 echo count( $dat ) . " unread message(s)\n";
@@ -114,34 +114,54 @@ if( is_array($dat) && count($dat))
 		{
 			$text = $smspi->error_message();
 			//$text = "Service not found";
-			$smspi->log( 'warning' , "Service $cmd not found" );
-	
+			$smspi->log( 'warning' , "Service $cmd not found" );	
 		}
 
-
-		//Send the computed reply//
-		echo "reply : $text\n";
-
-		$response = '';	
-		$gammu->Send( $r['remote_number'], $text, $response );
-		echo "$response\n";
-		
-		if( preg_match("/error/i", $response)){
-			echo $response;
-			$smspi->log( 'error' , "$response" );
-			//error_log("$response\n" , 3 , "errors.txt");
-			
-		}else{
-			//Log as sent
-			$smspi->logSent( $r['remote_number'] , $text , $response );
+		if( !$smspi->queue_add( $r['remote_number'] , $text )){
+			$smspi->log( 'error' , "Msg not added to the queue" );
 		}
 
-		if( !$smspi->markAsRead( $r['i'] ) ){
+		if( !$smspi->markAsRead( $r['i'] ) )
+		{
 			echo "Error with markAsRead( ".$r['i']." )\n";
 			$smspi->log( 'error' , "Error with markAsRead( ".$r['i']." )" );
 		}
 	}
 }
+
+
+
+// Get the queue and send the replies //
+
+$queue = $smspi->queue_get();
+
+echo count( $queue ) . " msg(s) in the queue\n";
+
+foreach( $queue as $q_id=>$r )
+{
+	$text = $r['q_body'];
+	//Send the computed reply//
+	echo "reply : $text\n";
+
+	$response = '';	
+	if( $text )$gammu->Send( $r['q_number'], $text, $response );
+	echo "$response\n";
+	
+	if( preg_match("/error/i", $response)){
+		echo $response;
+		$smspi->log( 'error' , "$response" );
+		//error_log("$response\n" , 3 , "errors.txt");
+		
+	}else{
+		//Log as sent
+		$smspi->logSent( $r['q_number'] , $text , $response );
+		$smspi->queue_del( $q_id );
+	}
+
+}
+
+
+
 
 
 
