@@ -14,7 +14,9 @@ $config = json_decode( file_get_contents( __DIR__ . '/../../config.json') );
 
 $cc = new cURL();	
 
-$body = $_GET['body'];
+$body = @strtolower($_GET['body']);
+if(!$body)die("?");
+
 @preg_match("/synonyme[ :]([a-z]+)/i", $body, $o );
 
 $mot = $o[1];

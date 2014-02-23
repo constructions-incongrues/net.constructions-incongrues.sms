@@ -75,7 +75,7 @@ if( is_array($dat) && count($dat))
 		
 		$r['body'] = trim($r['body']);
 
-		echo $r['remote_number'] . " say " . $r['body'] . "\n";
+		//echo $r['remote_number'] . " say " . $r['body'] . "\n";
 
 		$words = explode(' ', strtolower( $r['body'] ));
 		//We call the first word the 'command'
