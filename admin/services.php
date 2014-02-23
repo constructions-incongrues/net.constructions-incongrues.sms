@@ -29,7 +29,7 @@ foreach( $services as $k=>$r )
 {
 	//print_r( $r );
 	echo "<tr id=" . $r['id'] . ">";
-	echo "<td><a href=#>" . $r['name'] . "</a>";
+	echo "<td><a href='../services/" . $r['name'] . "'>" . $r['name'] . "</a>";
 	echo "<td>" . $r['url'];
 	echo "<td>" . $r['comment'];
 	if(!$r['calls'])$r['calls']='';
