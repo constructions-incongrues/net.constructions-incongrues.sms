@@ -1,132 +1,115 @@
 <?php
-/**
- * Get sms's, save to DB, process the queue, clear the messages
- */
-header('Content-Type: text/html; charset=utf-8');
+// Composer
+require_once(__DIR__.'/../vendor/autoload.php');
 
-require "class.gammu.php";
-require "class.smspi.php";
-require "class.curl.php";
+use ConstructionsIncongrues\Curl;
+use ConstructionsIncongrues\Sms\Gammu;
+use ConstructionsIncongrues\Sms\SmsPi;
+
+// Configuration
+include __DIR__."/config.php";
 
 $start = time();
 
-$config = json_decode( file_get_contents( __DIR__ . '/config.json') );
-
-$gammu = new gammu();
-$smspi = new smspi( $config );
-
-
-// Detect modem //
-/*
-if(!is_file( $config->modem ))
-{	
-	$smspi->logClear( "modem $config->modem not found" );
-	$smspi->log( 'error' , "modem $config->modem not found" );
-    die("Error : modem $config->modem not found\n");
+// Instruct MySQLi to throw exceptions
+// @see http://stackoverflow.com/a/21048373/3157702
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+$db = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+if (false === $db) {
+    throw new \RuntimeException("No database connection");
 }
 */
 
-if(!is_writable( $config->modem ))
-{
-	$smspi->logClear( "$config->modem not writable" );
-	$smspi->log( 'error' , "$config->modem not writable" );
-    die("Error : $config->modem not writable\n");
+// Detect modem
+if (!is_writable($modem)) {
+    throw new \RuntimeException("Modem is not writable - modem=".$modem);
 }
 
+$gammu = new Gammu();
+$smspi = new SmsPi($db);
 
-echo date('c') . "\n"; 
+echo date('c') . "\n";
 
 // Get SMS from Device
 echo "Get SMS...\n";
 $response = $gammu->Get();
 
-if(!count(@$response['inbox']))
-{
-	//$smspi->log( 'notice' , "No SMS" );
-	//die("No SMS\n"); 
-}
-else
-{
-	// Saving sms's
-	foreach( $response['inbox'] as $k=>$v )
-	{
-		//skip multipart messages//
-		if( is_array( @$v['link'] ) )continue;
-		$smspi->saveSms( $v );
-		//print_r( $v );
-	}
+if (!isset($response['inbox']) || count($response['inbox']) === 0) {
+    echo 'Inbox is empty';
+    exit(0);
+} else {
+    // Saving sms's
+    foreach ($response['inbox'] as $k => $v) {
+        // skip multipart messages
+        if (isset($v['link']) && is_array($v['link'])) {
+            continue;
+        }
+        $smspi->saveSms($v);
+    }
 }
 
-
-
-// Generating replies and put them in the queue //
+// Generating and sending replies
 $dat = $smspi->getUnread();
 
-echo count( $dat ) . " unread message(s)\n";
+echo count($dat) . " unread message(s)\n";
 echo "--------------------------\n";
-if( is_array($dat) && count($dat))
-{
-	
-	$smspi->log( 'notice' , count($dat) . " SMS" );
-	
-	foreach( $dat as $k=>$r ){
-		
-		print_r( $r );
-		
-		$r['body'] = trim($r['body']);
+if (is_array($dat) && count($dat)) {
+    foreach ($dat as $k => $r) {
+        print_r($r);
 
-		echo $r['remote_number'] . " say " . $r['body'] . "\n";
+        $r['body'] = trim($r['body']);
 
-		$words = explode(' ', strtolower( $r['body'] ));
-		//We call the first word the 'command'
-		$cmd = $words[0]; 
+        echo $r['remote_number'] . " say " . $r['body'] . "\n";
 
-		$service = $smspi->serviceGet( $cmd );		
+        $words = explode(' ', strtolower($r['body']));
 
-		echo "cmd=$cmd\n";
+        // We call the first word the 'command'
+        $cmd = $words[0];
+
+        $service = $smspi->serviceGet($cmd);
+
+        echo "cmd=$cmd\n";
 
 
-		//Todo : big things here
-		if( $service )
-		{
-			$cc = new cURL();	
-			
-			//$URL = "http://127.0.0.1/sms/$cmd/?num=".$r['remote_number'] . "&body=" . $r['body']
-			$URL = "http://127.0.0.1/sms/services/" . $service['url'] . "/?num=".$r['remote_number'] . "&body=" . urlencode( $r['body'] );
-			
-			$html = $cc->get( $URL );//call the service
-			$httpCode = $cc->httpCode();
-			$content_type = $cc->contentType();
-			$content_length = $cc->contentLength();
-			
-			if( $httpCode == 200 )
-			{
-				$text = $html;
-				echo "$text\n";
-			}else{
-				$text = "SMS Error $httpCode";
-				//Todo : Log error here
-				$smspi->log( 'error' , "SMS Error $httpCode" );	
-			}
-			$smspi->serviceUpdate( $service['id'] );
-		}
-		else
-		{
-			$text = $smspi->error_message();
-			//$text = "Service not found";
-			$smspi->log( 'warning' , "Service $cmd not found" );	
-		}
+        // Todo : big things here
+        if($service)
+        {
+            $cc = new Curl();
 
-		if( !$smspi->queue_add( $r['remote_number'] , $text )){
-			$smspi->log( 'error' , "Msg not added to the queue" );
-		}
+            //$URL = "http://127.0.0.1/sms/$cmd/?num=".$r['remote_number'] . "&body=" . $r['body']
+            $URL = "http://127.0.0.1/sms/" . $service['url'] . "/?num=".$r['remote_number'] . "&body=" . urlencode( $r['body'] );
 
-		if( !$smspi->markAsRead( $r['i'] ) )
-		{
-			echo "Error with markAsRead( ".$r['i']." )\n";
-			$smspi->log( 'error' , "Error with markAsRead( ".$r['i']." )" );
-		}
-	}
+            $html = $cc->get($URL);
+            $httpCode = $cc->httpCode();
+            $content_type = $cc->contentType();
+            $content_length = $cc->contentLength();
+
+            if ($httpCode == 200) {
+                $text = $html;
+                echo "$text\n";
+            } else {
+                $text = "SMS Error $httpCode";
+            }
+
+        } else {
+            $text = $smspi->error_message();
+        }
+
+        //Send the computed reply//
+        echo "reply : $text\n";
+
+        $response = '';
+        $gammu->Send($r['remote_number'], $text, $response);
+        echo "$response\n";
+
+        if (preg_match("/error/i", $response)) {
+            error_log("$response\n", 3, "errors.txt");
+        }
+
+        if (!$smspi->markAsRead($r['i'] )) {
+            echo "Error with markAsRead( ".$r['i']." )\n";
+        }
+    }
 }
 
 
@@ -166,15 +149,10 @@ foreach( $queue as $q_id=>$r )
 
 
 /* Clear all SMS's */
-if( count(@$response['inbox'] ) )
-{
-	echo "ClearAllSms();\n";
-	$gammu->ClearAllSms();
+if (count($response['inbox'])) {
+    echo "ClearAllSms();\n";
+    $gammu->ClearAllSms();
 
+    $end = time() - $start;
+    echo "done in $end seconds\n";
 }
-
-
-
-$end = time()-$start;
-echo "done in $end seconds\n";
-if( $end > 20 )$smspi->log( 'warning' , "job done in $end seconds" );

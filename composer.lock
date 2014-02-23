@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "f991e2046f09815ff68429739dc8275b",
+    "hash": "c021b12d66c6c989b1889a108073ee93",
     "packages": [
         {
             "name": "constructions-incongrues/ananas-build-toolkit",

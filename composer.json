@@ -5,7 +5,12 @@
             "url": "http://constructions-incongrues.github.com/packages"
         }
     ],
+    "autoload": {
+        "psr-0": {
+            "ConstructionsIncongrues": "src/src/"
+        }
+    },
     "require": {
-        "constructions-incongrues/anaangets-build-toolkit": "~0.10"
+        "constructions-incongrues/ananas-build-toolkit": "~0.10"
     }
 }
