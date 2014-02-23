@@ -19,7 +19,7 @@ switch($_POST['do']) {
 
     case 'numberAdd':
         //print_r( $_POST );
-        if (!preg_match("/^\+33[0-9]{9}$/", $_POST['number'])){
+        if (!preg_match("/^\+33[0-9]{9}$/", $_POST['number'])) {
             die("Le format doit etre : +33xxxxxxxxx");
         }
         if ($smspi->numberAdd($_POST['number'])) {
@@ -32,7 +32,7 @@ switch($_POST['do']) {
         //print_r($_POST);
         
         $id = $smspi->queue_add($_POST['number'], $_POST['body']);
-        if($id) {
+        if ($id) {
             die("In queue : msg #$id");
         } else {
             die("Error");
