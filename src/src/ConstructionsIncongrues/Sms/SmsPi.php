@@ -8,7 +8,6 @@ namespace ConstructionsIncongrues\Sms;
 */
 class SmsPi
 {
-
     public $config = null;
     public $db = null;
 
@@ -17,7 +16,6 @@ class SmsPi
         $this->config = $conf;
         $this->dbConnect();
     }
-
 
     private function dbConnect()
     {
@@ -71,17 +69,15 @@ class SmsPi
      * @param  string $phoneNumber [description]
      * @return bool              [description]
      */
-    function numberAdd($phoneNumber = "")
+    public function numberAdd($phoneNumber = "")
     {
-        $phoneNumber = trim( $phoneNumber );
-
-        // UPSERT HERE //
+        $phoneNumber = trim($phoneNumber);
 
         $sql = "INSERT INTO phonebook ( phonenumber, registered ) ";
-        $sql.= " VALUES ( '$phoneNumber', NOW() ) ";
-        $sql.= " ON DUPLICATE KEY UPDATE calls = calls+1, lastcall=NOW();";
+        $sql .= " VALUES ( '$phoneNumber', NOW() ) ";
+        $sql .= " ON DUPLICATE KEY UPDATE calls = calls+1, lastcall=NOW();";
 
-        $this->db->query( $sql ) or $this->error( $this->db->error );
+        $this->db->query($sql) or $this->error($this->db->error);
 
         return true;
     }
@@ -90,13 +86,15 @@ class SmsPi
      * Return the name of the owner of the given phoneNumber
      * @return [type] [description]
      */
-    function numberName( $num )
+    function numberName($num)
     {
-        $num = trim( $num );
-        $sql = "SELECT name FROM phonebook WHERE phonenumber LIKE '" . $this->db->escape_string( $num ) . "';";
-        $q = $this->db->query( $sql ) or $this->error( $this->db->error );
+        $num = trim($num);
+        $sql = "SELECT name FROM phonebook WHERE phonenumber LIKE '" . $this->db->escape_string($num) . "';";
+        $q = $this->db->query($sql) or $this->error($this->db->error);
         $r = $q->fetch_assoc();
-        if($q->num_rows)return $r['name'];
+        if ($q->num_rows) {
+            return $r['name'];
+        }
         return false;
     }
 
@@ -106,29 +104,18 @@ class SmsPi
      * @param  [type]  $phoneNumber [description]
      * @return boolean              [blocked]
      */
-    function isBlocked( $phoneNumber="" )
+    function isBlocked($phoneNumber = "")
     {
-
         $sql = "SELECT blocked FROM phonebook WHERE phonenumber LIKE '$phoneNumber';";
-        $this->db->query( $sql ) or $this->error( $this->db->error );
-
+        $this->db->query($sql) or $this->error($this->db->error);
     }
-
-
 
     //this is a bit shitty
-    function markAsRead( $msgId=0 )
+    function markAsRead($msgId)
     {
-
-        $msgId*=1;
-        if(!$msgId)return false;
-
-        $q = $this->db->query("UPDATE inbox SET status='read' WHERE `i`=$msgId LIMIT 1;") or $this->error( $db->error );
-
+        $q = $this->db->query("UPDATE inbox SET status='read' WHERE `i`=$msgId LIMIT 1;") or $this->error( $db->error);
         return true;
     }
-
-
 
     /**
      * Detect gammu installation
@@ -136,26 +123,24 @@ class SmsPi
      */
     public function gammuDetect()
     {
-        if (!file_exists( $this->config->gammu ) ){
+        if (!file_exists($this->config->gammu)) {
             $this->error("Gammu not found <b><u>{$this->config->gammu}</u></b> or not installed\r\n");
             return false;
         }
         return true;
     }
 
-
-
     /**
      * Return N unread message
      * @param  integer $limit [description]
      * @return [type]         [description]
      */
-    function getUnread( $limit=0)
+    public function getUnread($limit = 0)
     {
         $q = $this->db->query("SELECT * FROM inbox WHERE status LIKE 'unread';");
-        $dat=Array();
-        while( $r = $q->fetch_assoc()){
-            $dat[]=$r;
+        $dat = array();
+        while ($r = $q->fetch_assoc()) {
+            $dat[] = $r;
         }
         return $dat;
     }
@@ -164,13 +149,14 @@ class SmsPi
     /**
      * Logs
      */
-    function logs(){
+    public function logs()
+    {
 
         $sql = "SELECT * FROM log_errors WHERE 1 ORDER BY id DESC LIMIT 30;";
-        $q = $this->db->query( $sql ) or $this->error( $this->db->error );
+        $q = $this->db->query($sql) or $this->error($this->db->error);
 
-        $dat = Array();
-        while( $r = $q->fetch_assoc() ){
+        $dat = array();
+        while($r = $q->fetch_assoc()) {
             $dat[] = $r;
         }
 
@@ -182,10 +168,10 @@ class SmsPi
      * @param  string $msg [description]
      * @return [type]      [description]
      */
-    function logClear( $msg='' )
+    public function logClear($msg = '')
     {
-        $sql = "DELETE FROM log_errors WHERE error LIKE '" . $this->db->escape_string( $msg ) ."';";
-        $q = $this->db->query( $sql ) or $this->error( $this->db->error );
+        $sql = "DELETE FROM log_errors WHERE error LIKE '" . $this->db->escape_string($msg) ."';";
+        $q = $this->db->query($sql) or $this->error($this->db->error);
         return true;
     }
 
@@ -197,16 +183,16 @@ class SmsPi
      * @param  string $response      [description]
      * @return [type]                [description]
      */
-    function logSent( $remote_number='', $message='' , $response='' )
+    public function logSent($remote_number = '', $message = '', $response = '')
     {
-        $remote_number = trim( $remote_number );
-        $message = trim( $message );
-        $response = trim( $response );
+        $remote_number = trim($remote_number);
+        $message = trim($message);
+        $response = trim($response);
 
         $sql = "INSERT INTO log_sent ( number, message, response, time) ";
-        $sql.= "VALUES ( '" . $this->db->escape_string( $remote_number ) . "' , '".$this->db->escape_string( $message )."' , '".$this->db->escape_string( $response )."' , NOW() );";
+        $sql.= "VALUES ( '" . $this->db->escape_string($remote_number) . "' , '".$this->db->escape_string($message)."' , '".$this->db->escape_string($response)."' , NOW() );";
 
-        $q = $this->db->query( $sql ) or $this->error( $this->db->error );
+        $q = $this->db->query($sql) or $this->error($this->db->error);
         return $this->db->insert_id;
     }
 
@@ -215,9 +201,10 @@ class SmsPi
      * Check if the modem is writable
      * @return [type] [description]
      */
-    public function modemWritable(){
+    public function modemWritable()
+    {
         // Detect modem //
-        if(!is_writable( $this->config->modem ))
+        if (!is_writable($this->config->modem))
         {
             //$this->error("Error : $config->modem is not writable\n");
             return false;
@@ -229,13 +216,13 @@ class SmsPi
     functions service
     */
 
-    function serviceList(){
-
+    public function serviceList()
+    {
         $sql = "SELECT * FROM services WHERE 1 ORDER BY name;";
-        $q = $this->db->query( $sql ) or $this->error( $this->db->error );
+        $q = $this->db->query($sql) or $this->error($this->db->error);
 
-        $dat = Array();
-        while( $r = $q->fetch_assoc() ){
+        $dat = array();
+        while ($r = $q->fetch_assoc()) {
             $dat[] = $r;
         }
 
@@ -243,13 +230,15 @@ class SmsPi
     }
 
 
-    function serviceRegister( $serviceName='' ){
+    public function serviceRegister($serviceName = '')
+    {
+        $serviceName = trim($serviceName);
+        if (!$serviceName) {
+            return false;
+        }
 
-        $serviceName = trim( $serviceName );
-        if(!$serviceName)return false;
-
-        $sql = "INSERT INTO services ( name, created ) VALUES ( '" . $this->db->escape_string( $serviceName ) . "' , NOW() );";
-        $q = $this->db->query( $sql ) or $this->error( $this->db->error );
+        $sql = "INSERT INTO services ( name, created ) VALUES ( '" . $this->db->escape_string($serviceName) . "' , NOW() );";
+        $q = $this->db->query($sql) or $this->error($this->db->error);
 
         return $this->db->insert_id;
     }
@@ -259,14 +248,18 @@ class SmsPi
      * @param  string $serviceName [description]
      * @return [type]              [description]
      */
-    function serviceGet( $serviceName="" )
+    public function serviceGet($serviceName = "")
     {
-        $serviceName = trim( $serviceName );
-        if(!$serviceName)return false;
+        $serviceName = trim($serviceName);
+        if (!$serviceName) {
+            return false;
+        }
 
-        $sql = "SELECT * FROM services WHERE name LIKE '" . $this->db->escape_string( $serviceName ) . "';";
-        $q = $this->db->query( $sql ) or $this->error( $this->db->error );
-        if(!$q->num_rows)return false;
+        $sql = "SELECT * FROM services WHERE name LIKE '" . $this->db->escape_string($serviceName) . "';";
+        $q = $this->db->query($sql) or $this->error($this->db->error);
+        if (!$q->num_rows) {
+            return false;
+        }
 
         return $q->fetch_assoc();
     }
@@ -275,33 +268,37 @@ class SmsPi
      * Increment service call
      * @return [type] [description]
      */
-    function serviceUpdate( $serviceId=0 ){
-        $serviceId*=1;
-        if(!$serviceId)return false;
+    function serviceUpdate($serviceId = 0)
+    {
+        $serviceId *= 1;
+        if (!$serviceId) {
+            return false;
+        }
         $sql = "UPDATE services SET calls=calls+1 WHERE id=$serviceId;";
-        $q = $this->db->query( $sql ) or $this->error( $this->db->error );
+        $q = $this->db->query($sql) or $this->error($this->db->error);
         return true;
     }
 
 
 
-    function error($e,$exit=0) {
+    public function error($e, $exit = 0)
+    {
         echo $e."\n";
         //error must be logged
-        $this->log( 'error' , $e );
+        $this->log('error', $e);
 
-        if($exit == 1){ exit; }
+        if ($exit == 1) {
+            exit($exit);
+        }
     }
 
-    function log( $status='', $msg='' ){
-
-        //echo "log( $status , $msg )\n";
+    public function log($status = '', $msg = '')
+    {
 
         $sql = "INSERT INTO log_errors ( status, error, time ) ";
-        $sql.= "VALUES ( '".$this->db->escape_string( $status )."' , '" . $this->db->escape_string( $msg ) . "' , NOW() );";
+        $sql.= "VALUES ( '".$this->db->escape_string($status)."' , '" . $this->db->escape_string($msg) . "' , NOW() );";
 
-        //$q = $this->db->query( $sql ) or $this->error( $this->db->error );
-        $q = $this->db->query( $sql ) or die( $this->db->error . "\n" . $sql );
+        $q = $this->db->query($sql) or die($this->db->error . "\n" . $sql);
 
         return true;
     }
@@ -310,9 +307,9 @@ class SmsPi
     /**
      * Return a funny error messages
      */
-    function error_message()
+    public function error_message()
     {
-        $errors = Array();
+        $errors = array();
         $errors[] = "on se connait ?";
         $errors[] = "Ca va sinon ?";
         $errors[] = "va te faire foutre";
@@ -341,7 +338,7 @@ class SmsPi
         $errors[] = "De quoii ?";
         $errors[] = "Lol quoii ?";
         $errors[] = "Wesh geoffrezzz ca va ou quoii ??";
-        shuffle( $errors );
+        shuffle($errors);
         return $errors[0];
     }
 
@@ -354,20 +351,24 @@ class SmsPi
      * @param  string $body   [description]
      * @return [type]         [description]
      */
-    function queue_add($number='',$body='', $datetime='')
+    public function queue_add($number = '', $body = '', $datetime = '')
     {
-        $number=trim($number);
+        $number = trim($number);
         $body = trim($body);
 
-        if(!$number)return false;
-        if(!$body)return false;
+        if (!$number) {
+            return false;
+        }
+        if (!$body) {
+            return false;
+        }
 
         $date = 'NOW()';
 
         $sql = "INSERT INTO queue (q_number, q_body, q_sendtime) ";
-        $sql.= "VALUES ('" . $this->db->escape_string( $number ) . "', '".$this->db->escape_string( $body )."', $date );";
+        $sql.= "VALUES ('" . $this->db->escape_string($number) . "', '".$this->db->escape_string($body)."', $date );";
 
-        $this->db->query( $sql ) or die( $this->db->error );
+        $this->db->query($sql) or die($this->db->error);
 
         return $this->db->insert_id;
     }
@@ -377,12 +378,13 @@ class SmsPi
      * Return the full msg queue
      * @return [type] [description]
      */
-    function queue_get(){
+    public function queue_get()
+    {
 
         $sql = "SELECT * FROM queue WHERE 1;";
-        $q = $this->db->query( $sql ) or die( $this->db->error );
-        $DAT = Array();
-        while($r=$q->fetch_assoc()){
+        $q = $this->db->query($sql) or die( $this->db->error );
+        $DAT = array();
+        while ($r = $q->fetch_assoc()) {
             $DAT[$r['q_id']] = $r;
         }
         return $DAT;
@@ -393,12 +395,10 @@ class SmsPi
      * @param  integer $id [description]
      * @return [type]      [description]
      */
-    function queue_del($id=0)
+    function queue_del($id = 0)
     {
         $sql = "DELETE FROM queue WHERE q_id=$id LIMIT 1;";
-        $q = $this->db->query( $sql ) or die( $this->db->error );
+        $q = $this->db->query($sql) or die($this->db->error);
         return true;
     }
-
-
 }
