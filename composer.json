@@ -1,0 +1,11 @@
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://constructions-incongrues.github.com/packages"
+        }
+    ],
+    "require": {
+        "constructions-incongrues/anaangets-build-toolkit": "~0.10"
+    }
+}
