@@ -4,8 +4,11 @@
  */
 header('Content-Type: text/html; charset=utf-8');
 
-require "../class.smspi.php";
-require "../class.gammu.php";
+require __DIR__."/../../vendor/autoload.php";
+
+//use ConstructionsIncongrues\Curl;
+use ConstructionsIncongrues\Sms\Gammu;
+use ConstructionsIncongrues\Sms\SmsPi;
 
 $config = json_decode(file_get_contents(__DIR__.'/../config.json'));
 
@@ -25,8 +28,8 @@ if (!is_file(__DIR__."/../config.json") || !$config) {
 echo "<h1><i class='glyphicon glyphicon-info-sign'></i> Status</h1>";
 
 
-$smspi = new smspi($config);
-$gammu = new gammu();
+$smspi = new SmsPi($config);
+$gammu = new Gammu();
 
 
 if ($smspi->gammuDetect()) {

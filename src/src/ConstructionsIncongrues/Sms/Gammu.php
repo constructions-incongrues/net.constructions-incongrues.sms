@@ -28,7 +28,7 @@ class Gammu
         }
     }
 
-    public function gammu_exec($options = '--identify', $break = 0)
+    public function gammuExec($options = '--identify', $break = 0)
     {
         $exec=$this->gammu." ".$options;
         exec($exec, $r);
@@ -66,9 +66,9 @@ class Gammu
     }
 
 
-    function Identify(&$response)
+    public function identify(&$response)
     {
-        $r = $this->gammu_exec('--identify', 1);
+        $r = $this->gammuExec('--identify', 1);
         if (preg_match("#Error opening device|No configuration file found|Gammu is not installed#si", $this->unbreak($r), $s)) {
             $response = $r;
             return 0;
@@ -81,7 +81,7 @@ class Gammu
                     }
                 }
             }
-            $r = $this->gammu_exec('--monitor 1', 1);
+            $r = $this->gammuExec('--monitor 1', 1);
             for ($i = 0; $i < count($r); $i++) {
                 if (preg_match("#^(.+):(.+)#", $r[$i], $s)) {
                     if (trim($s[1]) and trim($s[2])) {
@@ -94,12 +94,24 @@ class Gammu
     }
 
 
+    public function version()
+    {
+        $r = $this->gammuExec('--version', 1);
+        foreach ($r as $k => $v) {
+            if (preg_match("/version/", $v)) {
+                return $v;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * Get SMS's
      */
-    function Get()
+    public function get()
     {
-        $r = $this->gammu_exec('--getallsms 1', 1);
+        $r = $this->gammuExec('--getallsms 1', 1);
         $data = array();
         $x = 0;
         $y = 0;
@@ -159,9 +171,9 @@ class Gammu
     }
 
 
-    public function Send($number, $text, &$respon)
+    public function send($number, $text, &$respon)
     {
-        $respon = $this->gammu_exec("--sendsms TEXT {$number} -len ". strlen($text)." -text \"{$text}\"");
+        $respon = $this->gammuExec("--sendsms TEXT {$number} -len ". strlen($text)." -text \"{$text}\"");
         if (eregi("OK", $respon)) {
             return 1;
         } else {
@@ -170,9 +182,9 @@ class Gammu
     }
 
 
-    function ClearAllSms()
+    public function clearAllSms()
     {
-        $respon = $this->gammu_exec("--deleteallsms 1");
+        $respon = $this->gammuExec("--deleteallsms 1");
         if (eregi("OK", $respon)) {
             return 1;
         } else {
@@ -183,7 +195,7 @@ class Gammu
 
     public function phoneBook($mem = 'ME')
     {
-        $r = $this->gammu_exec('--getallmemory '.$mem, 1);
+        $r = $this->gammuExec('--getallmemory '.$mem, 1);
         $data = array();
         $x = 0;
         $sx = 0;

@@ -12,7 +12,7 @@ class SmsPi
     public $config = null;
     public $db = null;
 
-    public function __construct(stdClass $conf)
+    public function __construct(\stdClass $conf)
     {
         $this->config = $conf;
         $this->dbConnect();
@@ -21,7 +21,7 @@ class SmsPi
 
     private function dbConnect()
     {
-        $this->db = new mysqli(
+        $this->db = new \mysqli(
             $this->config->db->host,
             $this->config->db->user,
             $this->config->db->pass,

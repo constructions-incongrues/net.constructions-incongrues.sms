@@ -4,10 +4,14 @@
  */
 header('Content-Type: text/html; charset=utf-8');
 
-require "../class.smspi.php";
-$config = json_decode( file_get_contents( __DIR__ . '/../config.json') );
+require __DIR__."/../../vendor/autoload.php";
 
-$smspi = new smspi( $config );
+//use ConstructionsIncongrues\Curl;
+use ConstructionsIncongrues\Sms\Gammu;
+use ConstructionsIncongrues\Sms\SmsPi;
+
+$config = json_decode(file_get_contents(__DIR__.'/../config.json'));
+$smspi = new SmsPi($config);
 
 include "menu.html";
 
