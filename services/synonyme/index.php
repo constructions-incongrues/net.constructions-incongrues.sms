@@ -12,14 +12,13 @@ $start = time();
 
 $config = json_decode( file_get_contents( __DIR__ . '/../../config.json') );
 
-
 $cc = new cURL();	
 
-
-
 $body = $_GET['body'];
-preg_match("/synonyme[ :]([a-z]+)/i", $body, $o );
-$mot = $o[1];
+@preg_match("/synonyme[ :]([a-z]+)/i", $body, $o );
+if(!$o[1])die("?");
+
+//$mot = $o[1];
 
 $URL = 'http://www.crisco.unicaen.fr/des/synonymes/' . $mot;
 //echo "$URL\n";
@@ -35,12 +34,8 @@ $detect= false;
 
 if( $httpCode == 200 )
 {
-	$text = $html;
-	//echo $text;exit;
-	//echo htmlentities( $text );exit;
-	//echo "<pre>";
 
-	$dat = explode("\n" , $text );
+	$dat = explode("\n" , $html );
 	foreach( $dat as $k=>$v )
 	{
 		
@@ -62,23 +57,24 @@ if( $httpCode == 200 )
 
 		//Pattern : <a href="/des/synonymes/bannette">&nbsp;bannette&nbsp;</a>
 		preg_match_all("/\ba href=\"\/des\/synonymes\/[a-z]+\">([a-z&;]+)/i", $v , $o );
-		if( is_array( $o ) && count( $o ) ){
-			
-			if(count( $o[1] ) > 1)$LIST = $o[1];//die();
+		
+		if( is_array( $o ) && count( $o ) )
+		{	
+			if( count( $o[1] ) > 1)$LIST = $o[1];//die();
 		}
-
 	}
 
-}else{
+}
+else
+{
 	//Todo : Log error here
 	echo "Error $httpCode";	
 }
 
-
 //asort($LIST);
 
 //print_r(array_unique($LIST));
-foreach($LIST as $k=>$word)
+foreach( $LIST as $k=>$word )
 {
 	$word = str_replace('&nbsp;','',$word);
 	$LIST[$k] = trim(strip_tags( $word ));
