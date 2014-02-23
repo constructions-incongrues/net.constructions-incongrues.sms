@@ -16,9 +16,9 @@ $cc = new cURL();
 
 $body = $_GET['body'];
 @preg_match("/synonyme[ :]([a-z]+)/i", $body, $o );
-if(!$o[1])die("?");
 
-//$mot = $o[1];
+$mot = $o[1];
+if( !$mot )die("?");
 
 $URL = 'http://www.crisco.unicaen.fr/des/synonymes/' . $mot;
 //echo "$URL\n";
