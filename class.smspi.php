@@ -316,7 +316,7 @@ class smspi {
 	{
 		$errors = Array();
 		$errors[] = "on se connait ?";
-		$errors[] = "?";
+		$errors[] = "Ca va sinon ?";
 		$errors[] = "va te faire foutre";
 		$errors[] = "cette fois c'est fini";
 		$errors[] = "n'insiste pas";
@@ -326,17 +326,23 @@ class smspi {
 		$errors[] = "kevin ?";
 		$errors[] = "c'est une blague ?";
 		$errors[] = "laisse tomber";
+		$errors[] = "si tu continue, j'appelle les flics";
+		$errors[] = "mauvais numero ?";
 		$errors[] = "lol";
 		$errors[] = "ca va toi ? Bisou";
 		$errors[] = "ce soir je peux pas";
-		$errors[] = "ok";
+		$errors[] = "mon frere va te peter la gueule";
+		$errors[] = "arrete ca tout de suite";
+		$errors[] = "encore un mot et je porte plainte";
+		$errors[] = "je suis juste derriere toi";
+		//$errors[] = "il y a une limite a ne pas depasser";
 
 		// bonus //
 		$errors[] = "Wesh tes con ou cest comment ? Tes sur que tu parle a la bonne personne ??";
 		//$errors[] = "Heiin ok";
 		$errors[] = "De quoii ?";
 		$errors[] = "Lol quoii ?";
-		//$errors[] = "Wesh geoffrezzz ca va ou quoii ??";
+		$errors[] = "Wesh geoffrezzz ca va ou quoii ??";
 		shuffle( $errors );
 		return $errors[0];
 	}

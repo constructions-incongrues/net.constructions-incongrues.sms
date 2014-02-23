@@ -67,7 +67,6 @@ if ( $smspi->db->connect_errno)
 	echo "<div class='alert alert-success'>DB Connection ok</div>";
 
 	//Check tables//
-	$check = Array( 'inbox' , 'phonebook' , 'log_errors', 'log_sent' ,'services');
 
 	$sql = "SHOW TABLES LIKE 'inbox';";
 	//$
@@ -75,3 +74,9 @@ if ( $smspi->db->connect_errno)
 
 
 
+//Tables
+$tables = Array( 'inbox' , 'phonebook' , 'log_errors', 'log_sent' ,'services', 'queue' );
+
+echo "<h2>Tables</h2>";
+
+print_r($tables);

@@ -25,7 +25,8 @@ echo "<th>name</th>";
 echo "<th>calls</th>";  
 echo "<th>lastcall</th>";  
 echo "</thead>";  
-echo "<tbody>";  
+echo "<tbody>"; 
+
 while( $r = $q->fetch_assoc() )
 {
 	echo "<tr id=".$r['id'].">";
@@ -36,7 +37,7 @@ while( $r = $q->fetch_assoc() )
 	echo "<td>" . $r['calls'];
 	if(preg_match("/0000/", $r['lastcall']))$r['lastcall']='';
 	echo "<td>" . $r['lastcall'];
-	echo "<td><a href=# onclick=test('" . $r['phonenumber'] . "')>test</a></td>";
+	echo "<td><a href=# onclick=test('" . $r['phonenumber'] . "')><i class='glyphicon glyphicon-envelope'></i></a></td>";
 	echo "</tr>\n";
 } 
 

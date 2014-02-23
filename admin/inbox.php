@@ -11,7 +11,7 @@ $smspi = new smspi( $config );
 
 include "menu.html";
 
-echo "<h1><i class='glyphicon glyphicon-envelope'></i> Inbox</h1>";
+echo "<h1><i class='glyphicon glyphicon-import'></i> Inbox</h1>";
 //echo "---------------------------------------------------------\n";
 
 //$msgs = $smspi->inbox();
