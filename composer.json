@@ -1,0 +1,16 @@
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://constructions-incongrues.github.com/packages"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "ConstructionsIncongrues": "src/src/"
+        }
+    },
+    "require": {
+        "constructions-incongrues/ananas-build-toolkit": "~0.10"
+    }
+}
