@@ -80,7 +80,7 @@ if (is_array($dat) && count($dat)) {
             $cc = new cURL();
 
             //$URL = "http://127.0.0.1/sms/$cmd/?num=".$r['remote_number'] . "&body=" . $r['body']
-            $URL = "http://127.0.0.1/sms/services/".$service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
+            $URL = "http://127.0.0.1/sms/src/services/".$service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
 
             $html = $cc->get($URL);//call the service
             $httpCode = $cc->httpCode();
