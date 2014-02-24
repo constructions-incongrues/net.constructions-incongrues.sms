@@ -1,10 +1,9 @@
 <?php
 /**
- * SMS script
+ * SMS service 'meteo'
  */
 header('Content-Type: text/html; charset=utf-8');
 
-$meteo = Array();
-
+$meteo = [];
 
 die("il fait beau");

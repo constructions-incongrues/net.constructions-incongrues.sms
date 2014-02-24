@@ -5,7 +5,7 @@
  */
 header('Content-Type: text/html; charset=utf-8');
 
-$list = Array();
+$list = [];
 
 $list[]= "Vous savez pourquoi grand mère sait faire un bon café?\nElle a que ça à foutre";
 
@@ -30,6 +30,6 @@ $list[]= "Boire au volant, c'est pas bien ! Faut boire à la bouteille";
 $list[]= "Que fait un éléphant dans un orchestre ?\nDe la trompette !";
 
 
-shuffle( $list );
+shuffle($list);
 
 die( $list[0] );

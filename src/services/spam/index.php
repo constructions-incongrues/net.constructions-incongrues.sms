@@ -5,9 +5,9 @@
  */
 header('Content-Type: text/html; charset=utf-8');
 
-$spam = Array();
+$spam=[];
 $spam[]= "Des femmes mures dans ta region, envois sexfemme au 666";
 
-shuffle( $spam );
+shuffle($spam);
 
 die( $spam[0] );

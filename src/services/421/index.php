@@ -6,10 +6,10 @@
 header('Content-Type: text/html; charset=ISO-8859-1');
 
 
-$HAND=Array();
-$HAND[]=rand(1,6);
-$HAND[]=rand(1,6);
-$HAND[]=rand(1,6);
+$HAND = array();
+$HAND[]=rand(1, 6);
+$HAND[]=rand(1, 6);
+$HAND[]=rand(1, 6);
 
 
 die(implode(" ", $HAND));

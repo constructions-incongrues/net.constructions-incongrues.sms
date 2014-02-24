@@ -6,13 +6,15 @@
 
 header('Content-Type: text/html; charset=utf-8');
 
-require __DIR__."/../../class.curl.php";
+// Composer
+require_once(__DIR__.'/../../../vendor/autoload.php');
 
+// Uses
+use ConstructionsIncongrues\Curl;
+
+// Start stopwatch
 $start = time();
 
-$config = json_decode(file_get_contents(__DIR__.'/../../config.json'));
-
-$cc = new cURL();
 
 $body = @strtolower($_GET['body']);
 
@@ -31,6 +33,7 @@ if (!$mot) {
 $URL = 'http://www.crisco.unicaen.fr/des/synonymes/' . $mot;
 //echo "$URL\n";
 
+$cc = new cURL();
 $html = $cc->get($URL);//call the service
 $httpCode = $cc->httpCode();
 $content_type = $cc->contentType();

@@ -1,10 +1,10 @@
 <?php
 /**
  * SMS script
- * Debug
+ * Debug service
  */
 header('Content-Type: text/html; charset=utf-8');
 
-$out = print_r( $_GET , true );
+$out = print_r($_GET, true);
 
 die( $out );
