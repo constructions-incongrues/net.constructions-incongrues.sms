@@ -32,8 +32,7 @@ echo "<th>lastcall</th>";
 echo "</thead>";
 echo "<tbody>";
 
-while($r = $q->fetch_assoc())
-{
+while ($r = $q->fetch_assoc()) {
     echo "<tr id=".$r['id'].">";
     //echo "<td>" . $r['id'];
     echo "<td>" . $r['phonenumber'];
@@ -46,7 +45,7 @@ while($r = $q->fetch_assoc())
         $r['lastcall']='';
     }
     echo "<td>" . $r['lastcall'];
-    echo "<td><a href=# onclick=test('" . $r['phonenumber'] . "')><i class='glyphicon glyphicon-envelope'></i></a></td>";
+    echo "<td><a href=# onclick=test('".$r['phonenumber']."')><i class='glyphicon glyphicon-envelope'></i></a></td>";
     echo "</tr>\n";
 }
 
@@ -70,4 +69,3 @@ function test(num){
     $("#more").load("controller.php",{'do':'numberTest', 'number':num, 'body':msg});
 }
 </script>
-
