@@ -1,10 +1,11 @@
 {
 	"db":{
+        "encoding": "@database.sms.encoding@",
         "host":     "@database.sms.host@",
         "name":     "@database.sms.name@",
-        "user":     "@database.sms.username@",
         "pass":     "@database.sms.password@",
-        "encoding": "@database.sms.encoding@"
+        "port":     "@database.sms.port@",
+        "user":     "@database.sms.username@"
 	},
     "gammu":  "@sms.gammu.path@",
     "modem":  "@sms.modem.path@",
