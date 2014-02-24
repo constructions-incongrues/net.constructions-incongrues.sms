@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c021b12d66c6c989b1889a108073ee93",
+    "hash": "20db92549fd533d00a73663ff926834d",
     "packages": [
         {
             "name": "constructions-incongrues/ananas-build-toolkit",
-            "version": "0.10.0",
+            "version": "0.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/constructions-incongrues/ananas-build-toolkit.git",
-                "reference": "0.10.0"
+                "reference": "0.11.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/constructions-incongrues/ananas-build-toolkit/zipball/0.10.0",
-                "reference": "0.10.0",
+                "url": "https://github.com/constructions-incongrues/ananas-build-toolkit/zipball/0.11.0",
+                "reference": "0.11.0",
                 "shasum": ""
             },
             "type": "library",
@@ -26,7 +26,7 @@
                 "issues": "https://github.com/constructions-incongrues/ananas-build-toolkit/issues",
                 "source": "https://github.com/constructions-incongrues/ananas-build-toolkit"
             },
-            "time": "2013-11-14 15:54:46"
+            "time": "2014-02-23 21:40:43"
         }
     ],
     "packages-dev": [
