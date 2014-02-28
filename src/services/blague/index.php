@@ -29,6 +29,11 @@ $list[]= "Boire au volant, c'est pas bien ! Faut boire à la bouteille";
 
 $list[]= "Que fait un éléphant dans un orchestre ?\nDe la trompette !";
 
+$list[]= "Connaissez-vous la blague de la chaise ?\n Non ?\nC'est dommage elle est pliante !";
+
+$list[]= "Qu'est-ce qui travaille 8 heures par jour dans l'administration ?\n La machine à café!";
+
+$list[]= "Un programmeur ne s’enfuit pas, il C# !";
 
 shuffle($list);
 
