@@ -104,14 +104,14 @@ class SmsPi
      * @param  [type]  $phoneNumber [description]
      * @return boolean              [blocked]
      */
-    function isBlocked($phoneNumber = "")
+    public function isBlocked($phoneNumber = "")
     {
         $sql = "SELECT blocked FROM phonebook WHERE phonenumber LIKE '$phoneNumber';";
         $this->db->query($sql) or $this->error($this->db->error);
     }
 
     //this is a bit shitty
-    function markAsRead($msgId)
+    public function markAsRead($msgId)
     {
         $q = $this->db->query("UPDATE inbox SET status='read' WHERE `i`=$msgId LIMIT 1;") or $this->error( $db->error);
         return true;
@@ -211,6 +211,21 @@ class SmsPi
         }
         return true;
     }
+
+    /**
+     * Check Curl php extension
+     * @return boolean [description]
+     */
+    public function isCurlInstalled()
+    {
+        if (in_array('curl', get_loaded_extensions())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
     /*
     functions service

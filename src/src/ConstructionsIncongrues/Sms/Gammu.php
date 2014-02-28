@@ -7,8 +7,8 @@ namespace ConstructionsIncongrues\Sms;
 | Author      : Stieven R. Kalengkian
 | Contact     : stieven.kalengkian@gmail.com
 | Website     : www.sleki.org - My Blog http://stieven.glowciptamedia.com/
-| Version     : 3.0
-| Last Update : Bill, 2014
+| Version     : 3.0.x
+| Last Update : jambonBill, 2014
 ------------------------------------------*/
 
 class Gammu

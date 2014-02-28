@@ -1,6 +1,7 @@
 <?php
 /**
  * SMS Admin :: Status
+ * Check system requirements and status
  */
 header('Content-Type: text/html; charset=utf-8');
 
@@ -13,6 +14,9 @@ use ConstructionsIncongrues\Sms\SmsPi;
 $config = json_decode(file_get_contents(__DIR__.'/../config.json'));
 
 include "menu.html";
+
+$ICO_OK="<i class='glyphicon glyphicon-thumbs-up'></i>";
+$ICO_NOK="<i class='glyphicon glyphicon-hand-right'></i>";
 
 //Detect config file
 if (!is_file(__DIR__."/../config.json") || !$config) {
@@ -33,45 +37,54 @@ $gammu = new Gammu();
 
 
 if ($smspi->gammuDetect()) {
-    echo "<div class='alert alert-success'>Gammu detected in " . $smspi->config->gammu . "</div>";
+    echo "<div class='alert alert-success'>$ICO_OK Gammu detected in " . $smspi->config->gammu . "</div>";
     $version = trim($gammu->Version());
     echo "<pre>$version</pre>";
 } else {
-    echo "Error : gammu not found\n";
+    echo "<div class='alert alert-danger'>$ICO_NOK Error : gammu not found</div>\n";
 }
 
 echo "<h2>Modem detection:</h2>";
 
 if ($smspi->modemWritable()) {
-    echo "<div class='alert alert-success'>Modem '".$smspi->config->modem."' is writeable</div>";
+    echo "<div class='alert alert-success'>$ICO_OK Modem '".$smspi->config->modem."' is writeable</div>";
 } else {
     if (!is_file($smspi->config->modem)) {
-        die("<div class='alert alert-danger'>Error : Modem '" . $smspi->config->modem . "' not found</div>");
+        echo "<div class='alert alert-danger'>$ICO_NOK Error : Modem '" . $smspi->config->modem . "' not found</div>";
+    } else {
+        //Modem found, but not writeable
+        echo "<div class='alert alert-danger'>$ICO_NOK Error : Modem '" . $smspi->config->modem . "' not writable\n";
+        echo "try : gammu identify</div>\n";
     }
-    echo "Error : Modem '" . $smspi->config->modem . "' not writable\n";
-    echo "try : gammu identify\n";
-    exit;
+
 }
 
 
+// CURL FOR PHP //
+echo "<h2>CURL Extension:</h2>";
+
+
+if ($smspi->isCurlInstalled()) {
+    echo "<div class='alert alert-success'>$ICO_OK cURL is installed on this server</div>";
+} else {
+    echo "<div class='alert alert-danger'>$ICO_NOK cURL is NOT installed on this server</div>";
+}
+
+
+//Database
 echo "<h2>DB connection:</h2>";
-
-
-//var_dump($config->db);
 
 //echo $smspi->db->error;
 if ($smspi->db->connect_errno) {
-    echo "<div class='alert alert-danger'>Failed to connect to MySQL: (" . $smspi->db->connect_errno . ") " . $smspi->db->connect_error . "</div>";
+    echo "<div class='alert alert-danger'>Failed to connect: (".$smspi->db->connect_errno.") ".$smspi->db->connect_error."</div>";
 } else {
-    echo "<div class='alert alert-success'>DB Connection ok</div>";
+    echo "<div class='alert alert-success'>$ICO_OK DB Connection ok</div>";
 
     //Check tables//
 
     $sql = "SHOW TABLES LIKE 'inbox';";
     //$
 }
-
-
 
 //Tables
 $tables = array( 'inbox' , 'phonebook' , 'log_errors', 'log_sent' ,'services', 'queue' );
