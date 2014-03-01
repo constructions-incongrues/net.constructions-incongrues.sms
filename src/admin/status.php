@@ -36,6 +36,9 @@ $smspi = new SmsPi($config);
 $gammu = new Gammu();
 
 
+//php version
+echo "<pre>PHP Version : " . phpversion() . "</pre>";
+
 if ($smspi->gammuDetect()) {
     echo "<div class='alert alert-success'>$ICO_OK Gammu detected in " . $smspi->config->gammu . "</div>";
     $version = trim($gammu->Version());
@@ -86,8 +89,8 @@ if ($smspi->db->connect_errno) {
     //$
 }
 
-//Tables
-$tables = array( 'inbox' , 'phonebook' , 'log_errors', 'log_sent' ,'services', 'queue' );
+//Tables//
+$tables = array( 'msg_in', 'msg_out', 'msg_queue', 'phonebook', 'log_errors', 'log_sent' );
 
 echo "<h2>Tables</h2>";
 

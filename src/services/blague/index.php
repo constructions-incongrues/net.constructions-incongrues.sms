@@ -35,6 +35,15 @@ $list[]= "Qu'est-ce qui travaille 8 heures par jour dans l'administration ?\n La
 
 $list[]= "Un programmeur ne s’enfuit pas, il C# !";
 
+$list[]= "Un muet dit à un sourd: ";
+
+$list[]= "Il y a deux sortes d'OVNI : l'OVNI tender et l'OVNI true";
+
+$list[]= "Qu'est ce qui est vert et qui se déplace sous l'eau?\nUn choux marin !";
+
+$list[]= "Qu'est ce qui est plus drole que de faire tourner des enfants sur un tourniquet ?\nLes arrêter avec une pelle.";
+
+
 shuffle($list);
 
 die( $list[0] );

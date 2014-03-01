@@ -15,11 +15,14 @@ $smspi = new SmsPi($config);
 
 include "menu.html";
 
-$number = trim($_GET['number']);
+$number = trim(@$_GET['number']);
 $number = preg_replace("/^33/", '+33', $number);
 
+if (!$number) {
+    die("<div class='alert alert-danger'>Not a number</div>");
+}
 //print_r($_GET);
-$smspi->numberName($_GET['number']);
+$smspi->numberName($number);
 
 
 echo "<h1><i class='glyphicon glyphicon-retweet'></i> Conversation with $number</h1>";

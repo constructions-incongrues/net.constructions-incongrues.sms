@@ -51,7 +51,7 @@ class SmsPi
         $remote = trim($r['remote_number']);
         $body   = trim($r['body']);
 
-        $sql = "INSERT INTO inbox ( ID, sent, coding, remote_number, status, body ) ";
+        $sql = "INSERT INTO msg_in ( ID, sent, coding, remote_number, status, body ) ";
         $sql.= " VALUES ( '$ID','$sent', '$coding', '$remote', 'unread', '" . $this->db->escape_string($body) . "' ) ";
         $sql.= " ON DUPLICATE KEY UPDATE sent=NOW();";
 
@@ -113,7 +113,7 @@ class SmsPi
     //this is a bit shitty
     public function markAsRead($msgId)
     {
-        $q = $this->db->query("UPDATE inbox SET status='read' WHERE `i`=$msgId LIMIT 1;") or $this->error( $db->error);
+        $q = $this->db->query("UPDATE msg_in SET status='read' WHERE `i`=$msgId LIMIT 1;") or $this->error( $db->error);
         return true;
     }
 
@@ -137,7 +137,7 @@ class SmsPi
      */
     public function getUnread($limit = 0)
     {
-        $q = $this->db->query("SELECT * FROM inbox WHERE status LIKE 'unread';");
+        $q = $this->db->query("SELECT * FROM msg_in WHERE status LIKE 'unread';");
         $dat = array();
         while ($r = $q->fetch_assoc()) {
             $dat[] = $r;
@@ -189,7 +189,7 @@ class SmsPi
         $message = trim($message);
         $response = trim($response);
 
-        $sql = "INSERT INTO log_sent ( number, message, response, time) ";
+        $sql = "INSERT INTO msg_out ( number, message, response, time) ";
         $sql.= "VALUES ( '" . $this->db->escape_string($remote_number) . "' , '".$this->db->escape_string($message)."' , '".$this->db->escape_string($response)."' , NOW() );";
 
         $q = $this->db->query($sql) or $this->error($this->db->error);
@@ -380,7 +380,7 @@ class SmsPi
 
         $date = 'NOW()';
 
-        $sql = "INSERT INTO queue (q_number, q_body, q_sendtime) ";
+        $sql = "INSERT INTO msg_queue (q_number, q_body, q_sendtime) ";
         $sql.= "VALUES ('" . $this->db->escape_string($number) . "', '".$this->db->escape_string($body)."', $date );";
 
         $this->db->query($sql) or die($this->db->error);
@@ -396,7 +396,7 @@ class SmsPi
     public function queue_get()
     {
 
-        $sql = "SELECT * FROM queue WHERE 1;";
+        $sql = "SELECT * FROM msg_queue WHERE 1;";
         $q = $this->db->query($sql) or die( $this->db->error );
         $DAT = array();
         while ($r = $q->fetch_assoc()) {
@@ -412,7 +412,13 @@ class SmsPi
      */
     function queue_del($id = 0)
     {
-        $sql = "DELETE FROM queue WHERE q_id=$id LIMIT 1;";
+        $id*=1;
+        
+        if (!$id) {
+            return false;
+        }
+
+        $sql = "DELETE FROM msg_queue WHERE q_id='$id' LIMIT 1;";
         $q = $this->db->query($sql) or die($this->db->error);
         return true;
     }

@@ -35,7 +35,7 @@ echo "<tbody>";
 while ($r = $q->fetch_assoc()) {
     echo "<tr id=".$r['id'].">";
     //echo "<td>" . $r['id'];
-    echo "<td>" . $r['phonenumber'];
+    echo "<td><a href='conversation.php?number=" . $r['phonenumber'] . "'>" . $r['phonenumber'] . "</a>";
     echo "<td>" . $r['name'];
     if (!$r['calls']) {
         $r['calls']='';

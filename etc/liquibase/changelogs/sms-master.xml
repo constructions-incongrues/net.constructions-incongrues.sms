@@ -145,5 +145,11 @@
         <sql>ALTER TABLE `services` ENGINE=InnoDB</sql>
         <sql>ALTER TABLE `services` DEFAULT CHARSET utf8 COLLATE utf8_general_ci</sql>
     </changeSet>
+    
+    <changeSet author="jambonbill" id="2">
+        <renameTable newTableName="msg_in" oldTableName="inbox" />
+        <renameTable newTableName="msg_out" oldTableName="log_sent" />
+        <renameTable newTableName="msg_queue" oldTableName="queue" />
+    </changeSet>
 
 </databaseChangeLog>

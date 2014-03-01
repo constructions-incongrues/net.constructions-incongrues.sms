@@ -19,7 +19,7 @@ echo "<h1><i class='glyphicon glyphicon-import'></i> Inbox</h1>";
 //echo "---------------------------------------------------------\n";
 
 //$msgs = $smspi->inbox();
-$sql = "SELECT * FROM inbox WHERE 1 ORDER BY i DESC LIMIT 30;";
+$sql = "SELECT * FROM msg_in WHERE 1 ORDER BY i DESC LIMIT 30;";
 $q = $smspi->db->query($sql) or die( $smspi->db->error );
 
 echo "<table class='table table-condensed table-striped'>";
