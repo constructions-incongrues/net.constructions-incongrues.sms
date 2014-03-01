@@ -31,7 +31,7 @@ echo "<h1><i class='glyphicon glyphicon-retweet'></i> Conversation with $number<
 
 $conv=[];
 
-$sql = "SELECT sent as t, body as message FROM inbox WHERE remote_number LIKE '$number' ORDER BY t DESC LIMIT 10;";
+$sql = "SELECT sent as t, body as message FROM msg_in WHERE remote_number LIKE '$number' ORDER BY t DESC LIMIT 10;";
 $q = $smspi->db->query($sql) or die($smspi->db->error);
 //echo "<pre>$sql</pre>";
 while ($r=$q->fetch_assoc()) {
@@ -39,7 +39,7 @@ while ($r=$q->fetch_assoc()) {
     $conv[$t]['in'] = $r['message'];
 }
 
-$sql = "SELECT message, time as t FROM log_sent WHERE `number` LIKE '$number' ORDER BY t DESC LIMIT 10;";
+$sql = "SELECT message, time as t FROM msg_out WHERE `number` LIKE '$number' ORDER BY t DESC LIMIT 10;";
 $q = $smspi->db->query($sql) or die($smspi->db->error);
 //echo "<pre>$sql</pre>";
 while ($r=$q->fetch_assoc()) {
