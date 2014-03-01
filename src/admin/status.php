@@ -14,6 +14,7 @@ use ConstructionsIncongrues\Sms\SmsPi;
 $config = json_decode(file_get_contents(__DIR__.'/../config.json'));
 
 include "menu.html";
+echo "<meta http-equiv='refresh' content='30' />";
 
 $ICO_OK="<i class='glyphicon glyphicon-thumbs-up'></i>";
 $ICO_NOK="<i class='glyphicon glyphicon-hand-right'></i>";
@@ -90,8 +91,28 @@ if ($smspi->db->connect_errno) {
 }
 
 //Tables//
-$tables = array( 'msg_in', 'msg_out', 'msg_queue', 'phonebook', 'log_errors', 'log_sent' );
+$tables = array( 'msg_in', 'msg_out', 'msg_queue', 'phonebook', 'log_errors', 'services' );
+
 
 echo "<h2>Tables</h2>";
+echo "<table class='table table-condensed'>";
+echo "<thead>";
+echo "<th>table name</th>";
+echo "<th>create time</th>";
+echo "<th>udpate time</th>";
+echo "<th>records</th>";
+echo "</thead>";
+echo "<tbody>";
 
-print_r($tables);
+foreach ($tables as $table) {
+    $nfo = $smspi->tableInfo($table);
+    echo "<tr>";
+    echo "<td><i class='glyphicon glyphicon-list-alt'></i> " . $table;
+    echo "<td>".$nfo['CREATE_TIME'];
+    echo "<td>".$nfo['UPDATE_TIME'];//?
+    echo "<td>".$nfo['TABLE_ROWS'];
+    //print_r($nfo);
+    echo "</tr>";
+}
+echo "</tbody>";
+echo "</table>";

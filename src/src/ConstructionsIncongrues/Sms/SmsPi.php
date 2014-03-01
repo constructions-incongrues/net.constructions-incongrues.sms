@@ -227,10 +227,9 @@ class SmsPi
 
 
 
-    /*
-    functions service
+    /**
+    * Return the list of registered services
     */
-
     public function serviceList()
     {
         $sql = "SELECT * FROM services WHERE 1 ORDER BY name;";
@@ -245,6 +244,11 @@ class SmsPi
     }
 
 
+    /**
+     * Register a new service
+     * @param  string $serviceName [description]
+     * @return [type]              [description]
+     */
     public function serviceRegister($serviceName = '')
     {
         $serviceName = trim($serviceName);
@@ -252,7 +256,7 @@ class SmsPi
             return false;
         }
 
-        $sql = "INSERT INTO services ( name, created ) VALUES ( '" . $this->db->escape_string($serviceName) . "' , NOW() );";
+        $sql = "INSERT INTO services (name,created) VALUES ('".$this->db->escape_string($serviceName)."', NOW() );";
         $q = $this->db->query($sql) or $this->error($this->db->error);
 
         return $this->db->insert_id;
@@ -294,7 +298,30 @@ class SmsPi
         return true;
     }
 
+    /**
+     * Return table info
+     * @param  string $tableName [description]
+     * @return [type]            [description]
+     */
+    public function tableInfo($tableName = '')
+    {
+        $tableName = trim($tableName);
+        
+        if (!$tableName) {
+            return false;
+        }
 
+        $sql = "SELECT * FROM information_schema.tables ";//TABLE_NAME, UPDATE_TIME, TABLE_ROWS
+        $sql.= "WHERE  TABLE_SCHEMA = 'sms' AND TABLE_NAME LIKE '$tableName';";
+        
+        $q = $this->db->query($sql) or $this->error($this->db->error);
+        
+        if (!$q->num_rows) {
+            return false;
+        }
+        
+        return $q->fetch_assoc();
+    }
 
     public function error($e, $exit = 0)
     {

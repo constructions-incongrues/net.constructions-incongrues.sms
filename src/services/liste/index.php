@@ -5,19 +5,25 @@
  */
 header('Content-Type: text/html; charset=utf-8');
 
-include __DIR__ . "/../../class.smspi.php";
+// Composer
+require_once(__DIR__.'/../../../vendor/autoload.php');
+
+// Uses
+use ConstructionsIncongrues\Sms\SmsPi;
+
+// Start stopwatch
+$start = time();
 
 
 $config = json_decode(file_get_contents(__DIR__.'/../../config.json'));
 $smspi = new SmsPi($config);
 
 // Get the list of services //
-$sql = "SELECT name FROM services WHERE 1 order by name;";
-$q = $smspi->db->query($sql) or die( $sql );
+$list=$smspi->serviceList();
 
 $cmds=[];
 
-while ($r = $q->fetch_assoc()) {
+foreach ($list as $k => $r) {
     $cmds[] = $r['name'];
 }
 
