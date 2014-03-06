@@ -35,7 +35,7 @@ echo "<tbody>";
 while ($r = $q->fetch_assoc()) {
     echo "<tr id=".$r['id'].">";
     //echo "<td>" . $r['id'];
-    echo "<td><a href='conversation.php?number=" . $r['phonenumber'] . "'>" . $r['phonenumber'] . "</a>";
+    echo "<td><a href='phonenumber.php?number=" . $r['phonenumber'] . "'>" . $r['phonenumber'] . "</a>";
     echo "<td>" . $r['name'];
     if (!$r['calls']) {
         $r['calls']='';
@@ -45,27 +45,29 @@ while ($r = $q->fetch_assoc()) {
         $r['lastcall']='';
     }
     echo "<td>" . $r['lastcall'];
-    echo "<td><a href=# onclick=test('".$r['phonenumber']."')><i class='glyphicon glyphicon-envelope'></i></a></td>";
+    //echo "<td><a href=# onclick=test('".$r['phonenumber']."')><i class='glyphicon glyphicon-envelope'></i></a></td>";
+    //echo "<td><a href='conversation.php?number=".$r['phonenumber']."'><i class='glyphicon glyphicon-retweet'></i></a></td>";
     echo "</tr>\n";
 }
 
 echo "</tbody>";
 echo "</table>";
 ?>
-
+<hr />
 <div id='more'></div>
 
-<a href='#' class='btn btn-default' onclick='addNumber()'> New phone number</a>
+<a href='#' class='btn btn-default' onclick='addNumber()'><i class='glyphicon glyphicon-plus-sign'></i> New phone number</a>
 <script>
-function addNumber(){
+function addNumber()
+{
     var nn = prompt("Enter new number");
     if(!nn)return false;
-    $("#main").load("controller.php",{'do':'numberAdd','number':nn});
+    $("#more").html("Saving new number...");
+    $("#more").load("controller.php",{'do':'numberAdd','number':nn},function(x){
+        try{eval(x);}
+        catch(e){alert(x);}
+    });
 }
 
-function test(num){
-    var msg=prompt("Enter message");
-    if(!msg)return false;
-    $("#more").load("controller.php",{'do':'numberTest', 'number':num, 'body':msg});
-}
+
 </script>

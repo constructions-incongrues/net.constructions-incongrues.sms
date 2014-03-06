@@ -86,18 +86,72 @@ class SmsPi
      * Return the name of the owner of the given phoneNumber
      * @return [type] [description]
      */
-    function numberName($num)
+    public function numberName($num = '')
     {
         $num = trim($num);
+        
+        if (!$num) {
+            return false;
+        }
+
         $sql = "SELECT name FROM phonebook WHERE phonenumber LIKE '" . $this->db->escape_string($num) . "';";
         $q = $this->db->query($sql) or $this->error($this->db->error);
         $r = $q->fetch_assoc();
+        
         if ($q->num_rows) {
             return $r['name'];
         }
+        
         return false;
     }
 
+    /**
+     * Save a phone number details (name, comments)
+     * @param  integer $id      [description]
+     * @param  string  $name    [description]
+     * @param  string  $comment [description]
+     * @return [type]           [description]
+     */
+    public function numberSave($id = 0, $name = '', $comment = '')
+    {
+        
+        $id*=1;
+        if (!$id) {
+            return false;
+        }
+
+        $sql = "UPDATE phonebook SET ";
+        $sql.= "name='".$this->db->escape_string($name)."' ";
+        $sql.= "WHERE id=$id LIMIT 1;";
+
+        $q = $this->db->query($sql) or $this->error($this->db->error);
+
+        return $this->db->affected_rows;
+    }
+
+
+    /**
+     * Return the name of the owner of the given phoneNumber
+     * @return [type] [description]
+     */
+    public function numberData($num = '')
+    {
+        $num = trim($num);
+        
+        if (!$num) {
+            return false;
+        }
+
+        $sql = "SELECT * FROM phonebook WHERE phonenumber LIKE '" . $this->db->escape_string($num) . "';";
+        $q = $this->db->query($sql) or $this->error($this->db->error);
+        $r = $q->fetch_assoc();
+        
+        if ($q->num_rows) {
+            return $r;
+        }
+        
+        return false;
+    }
 
     /**
      * Return the blocked status as bool

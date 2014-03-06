@@ -35,7 +35,7 @@ while ($r = $q->fetch_assoc()) {
     //print_r( $r );
     echo "<tr id=" . $r['i'] . ">";
     $name = $smspi->numberName($r['remote_number']);
-    echo "<td title='$name'>" . $r['remote_number'];
+    echo "<td title='$name'><a href=phonenumber.php?number=".$r['remote_number'].">".$r['remote_number']."</a>";
     echo "<td>" . $r['body'];
     $r['sent'] = str_replace(date('Y-m-d'), '', $r['sent']);
     echo "<td>" . $r['sent'];
