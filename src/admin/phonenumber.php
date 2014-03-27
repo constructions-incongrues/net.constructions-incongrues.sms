@@ -61,7 +61,7 @@ echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
   
   <a href='#' onclick='sav()' class='btn btn-primary'><i class='glyphicon glyphicon-ok'></i> Save number</a>
   <a href='#' onclick='sms()' class='btn btn-default'><i class='glyphicon glyphicon-envelope'></i> Send a message</a>
-  <a href='#' class='btn btn-default'><i class='glyphicon glyphicon-comment'></i> Read conversation</a>
+  <a href='#' onclick='conv()' class='btn btn-default'><i class='glyphicon glyphicon-comment'></i> Read conversation</a>
 
 </form>
 
@@ -81,6 +81,11 @@ function sav(){
         //try{ eval(x); }
         //catch(e){ alert(x); }
     });
+}
+
+function conv(){
+    //var num=$('#phonenumber').val();
+    document.location.href='conversation.php?number='+$('#phonenumber').val();
 }
 
 function sms()

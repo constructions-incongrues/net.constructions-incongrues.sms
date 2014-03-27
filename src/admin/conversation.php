@@ -51,21 +51,22 @@ while ($r=$q->fetch_assoc()) {
 ksort($conv);
 //print_r($conv);
 
-//echo "<table class=table>";
-foreach ($conv as $t => $v) {
-    //echo $t;
+if (count($conv)<1) {
+    echo "<div class='alert alert-info'>No conversation with xxx</div>";
+} else {
 
-    if (@$v['in']) {
-        echo date("d/m/Y H:i", $t);
-        $message = "<i class='glyphicon glyphicon-user'></i> " . $v['in'];
-        echo "<div class='alert alert-success'>$message</div>";
+    //echo "<table class=table>";
+    foreach ($conv as $t => $v) {
+        //echo $t;
+        if (@$v['in']) {
+            echo date("d/m/Y H:i", $t);
+            $message = "<i class='glyphicon glyphicon-user'></i> " . $v['in'];
+            echo "<div class='alert alert-success'>$message</div>";
+        }
+        if (@$v['out']) {
+            $message = "<i class='glyphicon glyphicon-hand-right'></i> " . $v['out'];
+            echo "<div class='alert alert-info'>$message</div>";
+        }
     }
-    if (@$v['out']) {
-        $message = "<i class='glyphicon glyphicon-hand-right'></i> " . $v['out'];
-        echo "<div class='alert alert-info'>$message</div>";
-    }
-    
 
 }
-
-
