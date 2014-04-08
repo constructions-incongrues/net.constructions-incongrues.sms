@@ -30,7 +30,7 @@ if (!is_file(__DIR__."/../config.json") || !$config) {
 }
 //echo "<pre>" . print_r( $config , true ) . "</pre>";
 
-echo "<h1><i class='glyphicon glyphicon-info-sign'></i> Status</h1>";
+echo "<h2><i class='glyphicon glyphicon-info-sign'></i> Status</h2>";
 
 
 $smspi = new SmsPi($config);
@@ -38,17 +38,17 @@ $gammu = new Gammu();
 
 
 //php version
-echo "<pre>PHP Version : " . phpversion() . "</pre>";
+echo "<div class='alert alert-success'>$ICO_OK PHP Version : " . phpversion() . "</div>";
 
 if ($smspi->gammuDetect()) {
-    echo "<div class='alert alert-success'>$ICO_OK Gammu detected in " . $smspi->config->gammu . "</div>";
-    $version = trim($gammu->Version());
-    echo "<pre>$version</pre>";
+    $gammu_version = trim($gammu->Version());
+    echo "<div class='alert alert-success'>$ICO_OK $gammu_version</div>";
+    //echo "<pre>$version</pre>";
 } else {
     echo "<div class='alert alert-danger'>$ICO_NOK Error : gammu not found</div>\n";
 }
 
-echo "<h2>Modem detection:</h2>";
+//echo "<h2>Modem detection:</h2>";
 
 if ($smspi->modemWritable()) {
     echo "<div class='alert alert-success'>$ICO_OK Modem '".$smspi->config->modem."' is writeable</div>";
@@ -65,7 +65,7 @@ if ($smspi->modemWritable()) {
 
 
 // CURL FOR PHP //
-echo "<h2>CURL Extension:</h2>";
+//echo "<h2>CURL Extension:</h2>";
 
 
 if ($smspi->isCurlInstalled()) {
@@ -76,7 +76,7 @@ if ($smspi->isCurlInstalled()) {
 
 
 //Database
-echo "<h2>DB connection:</h2>";
+//echo "<h2>DB connection:</h2>";
 
 //echo $smspi->db->error;
 if ($smspi->db->connect_errno) {
@@ -94,7 +94,7 @@ if ($smspi->db->connect_errno) {
 $tables = array( 'msg_in', 'msg_out', 'msg_queue', 'phonebook', 'log_errors', 'services' );
 
 
-echo "<h2>Tables</h2>";
+echo "<h2>Database</h2>";
 echo "<table class='table table-condensed'>";
 echo "<thead>";
 echo "<th>table name</th>";

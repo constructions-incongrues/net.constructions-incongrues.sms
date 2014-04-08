@@ -22,51 +22,35 @@ if (!$number) {
     die("<div class='alert alert-danger'>Not a number</div>");
 }
 //print_r($_GET);
-$smspi->numberName($number);
+$name=$smspi->numberName($number);
 
 
-echo "<h1><i class='glyphicon glyphicon-retweet'></i> Conversation with $number</h1>";
+echo "<h1><i class='glyphicon glyphicon-retweet'></i> Conversation with $number - $name</h1>";
 
 
+$conv=$smspi->conversation($number);
 
-$conv=[];
+echo conversationHtml($conv);
 
-$sql = "SELECT sent as t, body as message FROM msg_in WHERE remote_number LIKE '$number' ORDER BY t DESC LIMIT 10;";
-$q = $smspi->db->query($sql) or die($smspi->db->error);
-//echo "<pre>$sql</pre>";
-while ($r=$q->fetch_assoc()) {
-    $t = strtotime($r['t']);
-    $conv[$t]['in'] = $r['message'];
-}
+function conversationHtml(array $conv)
+{
+    if (count($conv)<1) {
+        return "<div class='alert alert-info'>No conversation with xxx</div>";
+    }
 
-$sql = "SELECT message, time as t FROM msg_out WHERE `number` LIKE '$number' ORDER BY t DESC LIMIT 10;";
-$q = $smspi->db->query($sql) or die($smspi->db->error);
-//echo "<pre>$sql</pre>";
-while ($r=$q->fetch_assoc()) {
-    $t = strtotime($r['t']);
-    //print_r($r);
-    $conv[$t]['out'] = $r['message'];
-}
-
-ksort($conv);
-//print_r($conv);
-
-if (count($conv)<1) {
-    echo "<div class='alert alert-info'>No conversation with xxx</div>";
-} else {
-
-    //echo "<table class=table>";
+    $html=[];
     foreach ($conv as $t => $v) {
         //echo $t;
         if (@$v['in']) {
-            echo date("d/m/Y H:i", $t);
+            $html[]=date("d/m/Y H:i", $t);
             $message = "<i class='glyphicon glyphicon-user'></i> " . $v['in'];
-            echo "<div class='alert alert-success'>$message</div>";
+            $html[]="<div class='alert alert-success'>$message</div>";
         }
         if (@$v['out']) {
             $message = "<i class='glyphicon glyphicon-hand-right'></i> " . $v['out'];
-            echo "<div class='alert alert-info'>$message</div>";
+            $html[]="<div class='alert alert-info'>$message</div>";
         }
     }
 
+    return implode("", $html);
 }

@@ -25,9 +25,13 @@ if (!$number) {
 //print_r($_GET);
 $r=$smspi->numberData($number);
 
-echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
 
-//print_r($r);
+// get conversation
+$conv=$smspi->conversation($number);
+
+$conversation=conversationHtml($conv);
+
+echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
 ?>
 
 <form role="form">
@@ -67,6 +71,22 @@ echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
 
 <div id='more'></div>
 
+<h3><i class='glyphicon glyphicon-comment'></i> Conversation</h3>
+
+<ul class='list-group'>
+
+<li><span class="label label-primary"><i class='glyphicon glyphicon-comment'></i> Primary</span></li>
+
+<li><span class="label label-default">Default blsbdwql qwfl qwf  wqf qw;f qw;f qw;f qw</span></li>
+
+<li><span class="label label-primary"><i class='glyphicon glyphicon-comment'></i> bla bla ?</span></li>
+
+<li><span class="label label-default">Il etait une fois Default</span></li>
+
+</ul>
+
+<div id='conv'><div class='alert'><?php echo $conversation?></div></div>
+
 <script>
 function sav(){
     
@@ -101,3 +121,31 @@ $( document ).ready(function() {
 });
 
 </script>
+<?php
+/**
+ * [conversationHtml description]
+ * @param  array  $conv [description]
+ * @return string       [description]
+ */
+function conversationHtml(array $conv)
+{
+    if (count($conv)<1) {
+        return "<div class='alert alert-info'>No conversation with xxx</div>";
+    }
+
+    $html=[];
+    foreach ($conv as $t => $v) {
+        //echo $t;
+        if (@$v['in']) {
+            $html[]=date("d/m/Y H:i", $t);
+            $message = "<i class='glyphicon glyphicon-user'></i> " . $v['in'];
+            $html[]="<div class='alert alert-success'>$message</div>";
+        }
+        if (@$v['out']) {
+            $message = "<i class='glyphicon glyphicon-hand-right'></i> " . $v['out'];
+            $html[]="<div class='alert alert-info'>$message</div>";
+        }
+    }
+
+    return implode("", $html);
+}

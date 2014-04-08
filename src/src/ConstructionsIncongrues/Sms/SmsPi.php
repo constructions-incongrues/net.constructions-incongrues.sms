@@ -25,8 +25,41 @@ class SmsPi
             $this->config->db->pass,
             $this->config->db->name
         );
-
         return $this->db;
+    }
+
+
+    /**
+     * Return a sms conversation for a given number
+     * @return [type] [description]
+     */
+    public function conversation($number = '', $limit = 10)
+    {
+        $conv=[];
+        
+        $sql = "SELECT sent as t, body as message FROM msg_in ";
+        $sql.= "WHERE remote_number LIKE '$number' ORDER BY t DESC LIMIT $limit;";
+        
+        $q = $this->db->query($sql) or die($this->db->error);
+        //echo "<pre>$sql</pre>";
+        while ($r=$q->fetch_assoc()) {
+            $t = strtotime($r['t']);
+            $conv[$t]['in'] = $r['message'];
+        }
+
+        $sql = "SELECT message, time as t FROM msg_out ";
+        $sql.= "WHERE `number` LIKE '$number' ORDER BY t DESC LIMIT $limit;";
+        
+        $q = $this->db->query($sql) or die($this->db->error);
+        //echo "<pre>$sql</pre>";
+        while ($r=$q->fetch_assoc()) {
+            $t = strtotime($r['t']);
+            //print_r($r);
+            $conv[$t]['out'] = $r['message'];
+        }
+
+        ksort($conv);
+        return $conv;
     }
 
     /**
@@ -201,16 +234,27 @@ class SmsPi
 
 
     /**
-     * Logs
+     * Sms system Logs (errors/warnings/notice)
      */
-    public function logs()
+    public function logs($filter = '', $limit = 30)
     {
+        
+        $limit*=1;
+        $WHERE=[];
+        $WHERE[]=1;
 
-        $sql = "SELECT * FROM log_errors WHERE 1 ORDER BY id DESC LIMIT 30;";
-        $q = $this->db->query($sql) or $this->error($this->db->error);
+        if ($filter) {
+            $WHERE[]="error LIKE '%".$this->db->escape_string($filter)."%'";
+        }
+
+        $sql = "SELECT id, status, error, time FROM log_errors ";
+        $sql.= "WHERE ".implode(" AND ", $WHERE);
+        $sql.= " ORDER BY id DESC LIMIT $limit;";
+        
+        $q = $this->db->query($sql) or $this->error($this->db->error . "<hr />$sql");
 
         $dat = array();
-        while($r = $q->fetch_assoc()) {
+        while ($r = $q->fetch_assoc()) {
             $dat[] = $r;
         }
 
@@ -427,6 +471,7 @@ class SmsPi
         $errors[] = "encore un mot et je porte plainte";
         $errors[] = "je suis juste derriere toi";
         //$errors[] = "il y a une limite a ne pas depasser";
+        $errors[] = "je ne te derange pas au moins ?";
 
         // bonus //
         $errors[] = "Wesh tes con ou cest comment ? Tes sur que tu parle a la bonne personne ??";
@@ -502,5 +547,28 @@ class SmsPi
         $sql = "DELETE FROM msg_queue WHERE q_id='$id' LIMIT 1;";
         $q = $this->db->query($sql) or die($this->db->error);
         return true;
+    }
+
+    /**
+     * [phoneBook description]
+     * @param  string $filter [description]
+     * @return [type]         [description]
+     */
+    public function phoneBook($filter = '', $limit = 30)
+    {
+        $WHERE=[];
+        $WHERE[]=1;
+
+        $sql = "SELECT * FROM phonebook ";
+        $sql.= "WHERE 1 LIMIT 30;";
+        
+        $q = $this->db->query($sql) or die( $this->db->error );
+        
+        $dat=[];
+
+        while ($r = $q->fetch_assoc()) {
+            $dat[]=$r;
+        }
+        return $dat;
     }
 }

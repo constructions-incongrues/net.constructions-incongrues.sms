@@ -25,8 +25,8 @@ switch($_POST['do']) {
             //die("Format court a corriger");
             $_POST['number'] = preg_replace("/^0([67])/", "+33$1", $_POST['number']);
         }
-        
-        
+
+
 
         if (!preg_match("/^\+33[0-9]{9}$/", $_POST['number'])) {
             die("Erreur: Le format doit etre : +33xxxxxxxxx");
@@ -38,7 +38,7 @@ switch($_POST['do']) {
 
     //Save phonenumber informations
     case 'numberSave':
-        
+
         if ($smspi->numberSave($_POST['id'], $_POST['name'], $_POST['comment'])) {
             echo "<div class='alert alert-success'>Number Saved!</div>";
         } else {
@@ -50,9 +50,9 @@ switch($_POST['do']) {
     //Send a message to a given number
     //(actualy add the message to the queue )
     case 'numberTest':
-        
+
         //print_r($_POST);
-        
+
         $id = $smspi->queue_add($_POST['number'], $_POST['body']);
         if ($id) {
             die("In queue : msg #$id");
@@ -61,5 +61,36 @@ switch($_POST['do']) {
         }
         break;
 
-    default:die("Error:" . $_POST['do']);
+    case 'getLogs':
+        //print_r($_POST);
+        $dat = $smspi->logs($_POST['filter']);
+        echo json_encode($dat);
+        exit;
+        break;
+
+    case 'phonebook':
+        //print_r($_POST);
+        $dat = $smspi->phoneBook($_POST['filter']);
+        echo json_encode($dat);
+        exit;
+        break;
+
+    case 'services':// list of registered services
+        $dat = $smspi->serviceList();
+        echo json_encode($dat);
+        break;
+
+    case 'serviceCreate':
+        //print_r($_POST);
+        $id = $smspi->serviceRegister($_POST['name']);
+        if ($id) {
+            #Service created !
+            die("document.location.href='?';");
+        } else {
+            die("error creating service");
+        }
+        break;
+
+    default:
+        die("Error:" . $_POST['do']);
 }
