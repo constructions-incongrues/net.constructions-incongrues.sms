@@ -17,6 +17,10 @@ class SmsPi
         $this->dbConnect();
     }
 
+    /**
+     * Mysqli db connection
+     * @return [type] [description]
+     */
     private function dbConnect()
     {
         $this->db = new \mysqli(
@@ -36,10 +40,10 @@ class SmsPi
     public function conversation($number = '', $limit = 10)
     {
         $conv=[];
-        
+
         $sql = "SELECT sent as t, body as message FROM msg_in ";
         $sql.= "WHERE remote_number LIKE '$number' ORDER BY t DESC LIMIT $limit;";
-        
+
         $q = $this->db->query($sql) or die($this->db->error);
         //echo "<pre>$sql</pre>";
         while ($r=$q->fetch_assoc()) {
@@ -49,7 +53,7 @@ class SmsPi
 
         $sql = "SELECT message, time as t FROM msg_out ";
         $sql.= "WHERE `number` LIKE '$number' ORDER BY t DESC LIMIT $limit;";
-        
+
         $q = $this->db->query($sql) or die($this->db->error);
         //echo "<pre>$sql</pre>";
         while ($r=$q->fetch_assoc()) {
@@ -122,7 +126,7 @@ class SmsPi
     public function numberName($num = '')
     {
         $num = trim($num);
-        
+
         if (!$num) {
             return false;
         }
@@ -130,11 +134,11 @@ class SmsPi
         $sql = "SELECT name FROM phonebook WHERE phonenumber LIKE '" . $this->db->escape_string($num) . "';";
         $q = $this->db->query($sql) or $this->error($this->db->error);
         $r = $q->fetch_assoc();
-        
+
         if ($q->num_rows) {
             return $r['name'];
         }
-        
+
         return false;
     }
 
@@ -147,7 +151,7 @@ class SmsPi
      */
     public function numberSave($id = 0, $name = '', $comment = '')
     {
-        
+
         $id*=1;
         if (!$id) {
             return false;
@@ -170,7 +174,7 @@ class SmsPi
     public function numberData($num = '')
     {
         $num = trim($num);
-        
+
         if (!$num) {
             return false;
         }
@@ -178,11 +182,11 @@ class SmsPi
         $sql = "SELECT * FROM phonebook WHERE phonenumber LIKE '" . $this->db->escape_string($num) . "';";
         $q = $this->db->query($sql) or $this->error($this->db->error);
         $r = $q->fetch_assoc();
-        
+
         if ($q->num_rows) {
             return $r;
         }
-        
+
         return false;
     }
 
@@ -238,7 +242,7 @@ class SmsPi
      */
     public function logs($filter = '', $limit = 30)
     {
-        
+
         $limit*=1;
         $WHERE=[];
         $WHERE[]=1;
@@ -250,7 +254,7 @@ class SmsPi
         $sql = "SELECT id, status, error, time FROM log_errors ";
         $sql.= "WHERE ".implode(" AND ", $WHERE);
         $sql.= " ORDER BY id DESC LIMIT $limit;";
-        
+
         $q = $this->db->query($sql) or $this->error($this->db->error . "<hr />$sql");
 
         $dat = array();
@@ -404,22 +408,23 @@ class SmsPi
     public function tableInfo($tableName = '')
     {
         $tableName = trim($tableName);
-        
+
         if (!$tableName) {
             return false;
         }
 
         $sql = "SELECT * FROM information_schema.tables ";//TABLE_NAME, UPDATE_TIME, TABLE_ROWS
         $sql.= "WHERE  TABLE_SCHEMA = 'sms' AND TABLE_NAME LIKE '$tableName';";
-        
+
         $q = $this->db->query($sql) or $this->error($this->db->error);
-        
+
         if (!$q->num_rows) {
             return false;
         }
-        
+
         return $q->fetch_assoc();
     }
+
 
     public function error($e, $exit = 0)
     {
@@ -432,6 +437,13 @@ class SmsPi
         }
     }
 
+
+    /**
+     * Write a database log ('notice'|'warning'|'error')
+     * @param  string $status [description]
+     * @param  string $msg    [description]
+     * @return [type]         [description]
+     */
     public function log($status = '', $msg = '')
     {
 
@@ -539,7 +551,7 @@ class SmsPi
     function queue_del($id = 0)
     {
         $id*=1;
-        
+
         if (!$id) {
             return false;
         }
@@ -561,14 +573,72 @@ class SmsPi
 
         $sql = "SELECT * FROM phonebook ";
         $sql.= "WHERE 1 LIMIT 30;";
-        
+
         $q = $this->db->query($sql) or die( $this->db->error );
-        
+
         $dat=[];
 
         while ($r = $q->fetch_assoc()) {
             $dat[]=$r;
         }
         return $dat;
+    }
+
+
+
+    /**
+     * SPAM Functions
+     * SPAM Functions
+     * SPAM Functions
+     */
+
+
+    /**
+     * Return the last spam record
+     * @return [type] [description]
+     */
+    public function spamGetLast()
+    {
+        $sql="SELECT * FROM log_spam ORDER BY id DESC LIMIT 1;";
+        $q = $this->db->query($sql) or die( $this->db->error );
+
+        if (!$q->num_rows) {
+            return false;
+        }
+        return $q->fetch_assoc();
+    }
+
+    /**
+     * Return a random number to spam
+     * @return [type] [description]
+     */
+    public function spamGetDest()
+    {
+        //Get last x numbers
+        $sub="SELECT DISTINCT number FROM log_spam WHERE 1 ORDER BY id DESC LIMIT 20;";
+        //$q = $this->db->query($sub) or die( $this->db->error );
+
+        $sql="SELECT phonenumber FROM phonebook WHERE phonenumber NOT IN ( 1 ) ORDER BY RAND() LIMIT 1;";
+        $q = $this->db->query($sql) or die( $this->db->error );
+
+        if (!$q->num_rows) {
+            return false;
+        }
+
+        $r=$q->fetch_assoc();
+        return $r['phonenumber'];
+
+    }
+
+    /**
+     * Log spamed number and message (to avoid repetition later)
+     * @return [type] [description]
+     */
+    public function spamLog($number, $body)
+    {
+        $sql="INSERT INTO log_spam (number, body, time) ";
+        $sql.=" VALUES (\"$number\",\"$body\",NOW());";
+        $q = $this->db->query($sql) or die( $this->db->error );
+        return true;
     }
 }

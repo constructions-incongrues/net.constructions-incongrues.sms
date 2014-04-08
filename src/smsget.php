@@ -1,6 +1,8 @@
 <?php
 /**
+ * SuperSMS
  * Get sms's, save to DB, process the queue, clear the messages
+ * Run Every minutes
  */
 header('Content-Type: text/html; charset=utf-8');
 

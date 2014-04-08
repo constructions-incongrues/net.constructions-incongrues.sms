@@ -19,7 +19,7 @@ include "menu.html";
 
 <div id='more'></div>
 
-<a href=# class='btn btn-default' onclick='newService()'> New service</a>
+<a href=# class='btn btn-default' onclick='newService()'><i class="glyphicon glyphicon-plus"></i> New service</a>
 <script>
 //
 function newService()
@@ -34,8 +34,6 @@ function newService()
         try{eval(x);}
         catch(e){alert(x);}
     });
-
-
 }
 
 function getList(){
@@ -74,7 +72,7 @@ function display(r){
         tab.push("<tr>");
         tab.push("<td>"+r[i].id);
         tab.push("<td>"+r[i].name);
-        tab.push("<td>"+r[i].url);
+        tab.push("<td><a href=../services/"+r[i].url+">"+r[i].url+"</a>");
         tab.push("<td>"+r[i].calls);
         tab.push("<td>"+r[i].comment);
         tab.push("</tr>");
