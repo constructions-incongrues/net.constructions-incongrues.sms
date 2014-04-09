@@ -12,6 +12,7 @@ header('Content-Type: text/html; charset=utf-8');
 $say = [];
 
 $say[]= "Je t'adore";
+$say[]= "Tu seras toujours dans mon coeur";
 $say[]= "Je t'aime";
 $say[]= "Je te kiffe trop";
 

@@ -364,12 +364,37 @@ class SmsPi
         return $this->db->insert_id;
     }
 
+
     /**
      * Return one service record for a given service name, or false if the service is not found.
      * @param  string $serviceName [description]
      * @return [type]              [description]
      */
-    public function serviceGet($serviceName = "")
+    public function service($serviceId = 0)
+    {
+        $serviceId*=1;
+
+        if (!$serviceId) {
+            return false;
+        }
+
+        $sql = "SELECT * FROM services WHERE id=$serviceId LIMIT 1;";
+        $q = $this->db->query($sql) or $this->error($this->db->error);
+
+        if (!$q->num_rows) {
+            return false;
+        }
+
+        return $q->fetch_assoc();
+    }
+
+
+    /**
+     * Return one service record for a given service name, or false if the service is not found.
+     * @param  string $serviceName [description]
+     * @return [type]              [description]
+     */
+    public function serviceByName($serviceName = "")
     {
         $serviceName = trim($serviceName);
         if (!$serviceName) {
@@ -385,11 +410,36 @@ class SmsPi
         return $q->fetch_assoc();
     }
 
+    public function serviceSave($id = 0, $name = "", $url = "", $comment = "")
+    {
+        $id*=1;
+        $name=trim($name);
+
+        if (!$id || !$name || !$this->service($id)) {
+            return false;
+        }
+
+        $url=trim($url);
+        $comment=trim($comment);
+
+        $sql = "UPDATE services SET ";
+        $sql.= "name=\"".$this->db->escape_string($name)."\", ";
+        $sql.= "url=\"".$this->db->escape_string($url)."\", ";
+        $sql.= "comment=\"".$this->db->escape_string($comment)."\" ";
+        $sql.= "WHERE id=$id LIMIT 1;";
+
+        //$q = $this->db->query($sql) or die($sql);
+        $q = $this->db->query($sql) or $this->error($this->db->error);
+        return true;
+    }
+
+
     /**
      * Increment service call
+     * TODO : make the method private
      * @return [type] [description]
      */
-    function serviceUpdate($serviceId = 0)
+    public function serviceUpdate($serviceId = 0)
     {
         $serviceId *= 1;
         if (!$serviceId) {

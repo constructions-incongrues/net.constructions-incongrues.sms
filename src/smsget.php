@@ -72,15 +72,15 @@ if (is_array($dat) && count($dat)) {
         //We call the first word the 'command'
         $cmd = $words[0];
 
-        $service = $smspi->serviceGet($cmd);
+        $service = $smspi->serviceByName($cmd);
 
         echo "cmd=$cmd\n";
 
 
         //Todo : big things here
         if ($service) {
-            $cc = new cURL();
 
+            $cc = new cURL();
             //$URL = "http://127.0.0.1/sms/$cmd/?num=".$r['remote_number'] . "&body=" . $r['body']
             $URL = "http://127.0.0.1/sms/src/services/".$service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
 

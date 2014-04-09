@@ -17,8 +17,6 @@ header('Content-Type: text/html; charset=utf-8');
 include "menu.html";
 ?>
 
-<h1><i class='glyphicon glyphicon-book'></i> Phonebook</h1>
-
 
 <div class='form-inline'>
 
@@ -52,7 +50,7 @@ $q = $smspi->db->query($sql) or die( $smspi->db->error );
 
 echo "<table class='table table-striped table-condensed'>";
 echo "<thead>";
-//echo "<th>id</th>";  
+//echo "<th>id</th>";
 echo "<th>number</th>";
 echo "<th>name</th>";
 echo "<th>calls</th>";
@@ -121,7 +119,7 @@ function getNums(){
 
 function display(r){
     //console.log('dispLog()',json);
-    
+
     var tab=[];
     tab.push("<table class='table table-condensed table-striped'>");
     tab.push("<thead>");
@@ -134,8 +132,8 @@ function display(r){
     tab.push("<tbody>");
     for(var i=0;i<r.length;i++){
         tab.push("<tr>");
-        tab.push("<td>"+r[i].name);
-        tab.push("<td>"+r[i].phonenumber);
+        tab.push("<td><a href='phonenumber.php?number="+r[i].phonenumber+"'>"+r[i].name);
+        tab.push("<td><a href='phonenumber.php?number="+r[i].phonenumber+"'>"+r[i].phonenumber);
         tab.push("<td>"+r[i].calls);
         tab.push("<td>"+r[i].lastcall);
         tab.push("</tr>");
@@ -148,7 +146,7 @@ function display(r){
 
 $( document ).ready(function() {
     $('#searchstr').change(function(){
-        console.log("changed"); 
+        console.log("changed");
         getNums();
     });
     getNums();

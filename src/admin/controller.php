@@ -83,13 +83,19 @@ switch($_POST['do']) {
     case 'serviceCreate':
         //print_r($_POST);
         $id = $smspi->serviceRegister($_POST['name']);
-        if ($id) {
-            #Service created !
+        if ($id) { # Service created !
             die("document.location.href='?';");
         } else {
             die("error creating service");
         }
         break;
+
+    case 'serviceSave':
+        $_POST['id']*=1;
+        $id = $smspi->serviceSave($_POST['id'], $_POST['name'], $_POST['url'], $_POST['comment']);
+        die("document.location.href='?id=".$_POST['id']."';");
+        break;
+
 
     default:
         die("Error:" . $_POST['do']);

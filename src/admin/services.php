@@ -5,13 +5,9 @@
 header('Content-Type: text/html; charset=utf-8');
 
 //require __DIR__."/../../vendor/autoload.php";
-
-//use ConstructionsIncongrues\Curl;
-//use ConstructionsIncongrues\Sms\Gammu;
 //use ConstructionsIncongrues\Sms\SmsPi;
 //$config = json_decode(file_get_contents(__DIR__.'/../config.json'));
 //$smspi = new SmsPi($config);
-
 include "menu.html";
 ?>
 
@@ -21,7 +17,6 @@ include "menu.html";
 
 <a href=# class='btn btn-default' onclick='newService()'><i class="glyphicon glyphicon-plus"></i> New service</a>
 <script>
-//
 function newService()
 {
     var ns = prompt("Enter service name");
@@ -47,34 +42,26 @@ function getList(){
             o=eval(x);
             display(o);
         }
-        catch(e){
-            alert(x);
-        }
+        catch(e){alert(x);}
     });
 }
 
-
 function display(r){
-    //console.log('dispLog()',json);
-
     var tab=[];
     tab.push("<table class='table table-condensed table-striped'>");
     tab.push("<thead>");
     tab.push("<th>#</th>");
     tab.push("<th>name</th>");
-    tab.push("<th>url</th>");
-    tab.push("<th>calls</th>");
     tab.push("<th>comment</th>");
-    //tab.push("<th>calls</th>");
+    tab.push("<th>calls</th>");
     tab.push("</thead>");
     tab.push("<tbody>");
     for(var i=0;i<r.length;i++){
         tab.push("<tr>");
         tab.push("<td>"+r[i].id);
-        tab.push("<td>"+r[i].name);
-        tab.push("<td><a href=../services/"+r[i].url+">"+r[i].url+"</a>");
-        tab.push("<td>"+r[i].calls);
+        tab.push("<td><a href='service.php?id="+r[i].id+"'>"+r[i].name);
         tab.push("<td>"+r[i].comment);
+        tab.push("<td>"+r[i].calls);
         tab.push("</tr>");
     }
     tab.push("</tbody>");
@@ -83,8 +70,7 @@ function display(r){
     $('table').tablesorter();
 }
 
-$( document ).ready(function() {
+$( document ).ready(function(){
     getList();
 });
-
 </script>
