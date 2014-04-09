@@ -106,12 +106,20 @@ class SmsPi
      * @param  string $phoneNumber [description]
      * @return bool              [description]
      */
-    public function numberAdd($phoneNumber = "")
+    public function numberAdd($phoneNumber = "", $comment = "")
     {
         $phoneNumber = trim($phoneNumber);
 
-        $sql = "INSERT INTO phonebook ( phonenumber, registered ) ";
-        $sql .= " VALUES ( '$phoneNumber', NOW() ) ";
+        //correction du numero en ajoutant +33 si necessaire
+        if (preg_match("/^0[67][0-9]{8}$/", $phoneNumber)) {
+            $phoneNumber = preg_replace("/^0([67])/", "+33$1", $phoneNumber);
+        }
+
+        //verification du format
+        //todo
+
+        $sql = "INSERT INTO phonebook ( phonenumber, comment, registered ) ";
+        $sql .= " VALUES ( '$phoneNumber', '" . $this->db->escape_string($comment) . "', NOW() ) ";
         $sql .= " ON DUPLICATE KEY UPDATE calls = calls+1, lastcall=NOW();";
 
         $this->db->query($sql) or $this->error($this->db->error);
@@ -158,9 +166,11 @@ class SmsPi
         }
 
         $sql = "UPDATE phonebook SET ";
-        $sql.= "name='".$this->db->escape_string($name)."' ";
+        $sql.= "name='".$this->db->escape_string($name)."', ";
+        $sql.= "comment='".$this->db->escape_string($comment)."' ";
         $sql.= "WHERE id=$id LIMIT 1;";
 
+        //$q = $this->db->query($sql) or die($sql);
         $q = $this->db->query($sql) or $this->error($this->db->error);
 
         return $this->db->affected_rows;
@@ -642,7 +652,7 @@ class SmsPi
         $WHERE[]=1;
 
         $sql = "SELECT * FROM phonebook ";
-        $sql.= "WHERE 1 LIMIT 30;";
+        $sql.= "WHERE 1 LIMIT $limit;";
 
         $q = $this->db->query($sql) or die( $this->db->error );
 

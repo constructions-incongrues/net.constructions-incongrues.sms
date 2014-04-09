@@ -24,7 +24,14 @@ if (!$number) {
 }
 //print_r($_GET);
 $r=$smspi->numberData($number);
+//print_r($r);
 
+if (!$r) {
+    echo "<div class='alert alert-error'>";
+    echo "Phone Number not found.";
+    echo "</div>";
+    die();
+}
 
 // get conversation
 $conv=$smspi->conversation($number);
@@ -61,20 +68,20 @@ echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
     </label>
   </div>
 
-  <hr />
+<hr />
 
-  <a href='#' onclick='sav()' class='btn btn-primary'><i class='glyphicon glyphicon-ok'></i> Save number</a>
-  <a href='#' onclick='sms()' class='btn btn-default'><i class='glyphicon glyphicon-envelope'></i> Send a message</a>
-  <!--
-  <a href='#' onclick='conv()' class='btn btn-default'><i class='glyphicon glyphicon-comment'></i> Read conversation</a>
-  -->
-  <a href='#' onclick='trash()' class='btn btn-danger pull-right' title=''><i class='glyphicon glyphicon-trash'></i> Del.</a>
+<a href='#' onclick='sav()' class='btn btn-primary'><i class='glyphicon glyphicon-ok'></i> Save number</a>
+<a href='#' onclick='sms()' class='btn btn-default'><i class='glyphicon glyphicon-envelope'></i> Send a message</a>
+<!--
+<a href='#' onclick='conv()' class='btn btn-default'><i class='glyphicon glyphicon-comment'></i> Read conversation</a>
+-->
+<a href='#' onclick='trash()' class='btn btn-danger pull-right' title=''><i class='glyphicon glyphicon-trash'></i> Del.</a>
 
 </form>
 
 <div id='more'></div>
 
-<h3><i class='glyphicon glyphicon-comment'></i> Conversation</h3>
+<h3><i class='glyphicon glyphicon-comment'></i> <a href=#>Conversation</a></h3>
 
 <!--
 <ul class='list-group'>
@@ -146,6 +153,37 @@ function conversationHtml(array $conv)
     foreach ($conv as $t => $v) {
         //echo $t;
         if (@$v['in']) {
+            //$html[]=date("d/m/Y H:i", $t);
+            $message = "<i class='glyphicon glyphicon-user'></i> " . $v['in'];
+            $html[]="<h3>";
+            $html[]="<span class='label label-primary pad4'>$message</span>";
+            $html[]="<span class='pull-right small'>".date("d/m/Y H:i", $t)."</span>";
+            $html[]="</h3>";
+        }
+        if (@$v['out']) {
+
+            $message = "<i class='glyphicon glyphicon-hand-right'></i> " . $v['out'];
+            $html[]="<h3>";
+            $html[]="<span class='label label-default'>$message</span>";
+            //$html[]="<span class='pull-right muted'>xx-xx-xxx</span>";
+            $html[]="</h3>";
+        }
+    }
+
+    return implode("", $html);
+}
+
+/*
+function conversationHtml(array $conv)
+{
+    if (count($conv)<1) {
+        return "<div class='alert alert-info'>No conversation with xxx</div>";
+    }
+
+    $html=[];
+    foreach ($conv as $t => $v) {
+        //echo $t;
+        if (@$v['in']) {
             $html[]=date("d/m/Y H:i", $t);
             $message = "<i class='glyphicon glyphicon-user'></i> " . $v['in'];
             $html[]="<div class='alert alert-success'>$message</div>";
@@ -158,3 +196,4 @@ function conversationHtml(array $conv)
 
     return implode("", $html);
 }
+*/

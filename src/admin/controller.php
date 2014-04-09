@@ -42,6 +42,7 @@ switch($_POST['do']) {
         if ($smspi->numberSave($_POST['id'], $_POST['name'], $_POST['comment'])) {
             echo "<div class='alert alert-success'>Number Saved!</div>";
         } else {
+            echo "Error saving number\n";
             print_r($_POST);
         }
         exit;
@@ -77,7 +78,7 @@ switch($_POST['do']) {
 
     case 'phonebook':
         //print_r($_POST);
-        $dat = $smspi->phoneBook($_POST['filter']);
+        $dat = $smspi->phoneBook($_POST['filter'], 100);
         echo json_encode($dat);
         exit;
         break;

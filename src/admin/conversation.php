@@ -24,14 +24,26 @@ if (!$number) {
 //print_r($_GET);
 $name=$smspi->numberName($number);
 
-
 echo "<h1><i class='glyphicon glyphicon-retweet'></i> Conversation with $number - $name</h1>";
-
 
 $conv=$smspi->conversation($number);
 
 echo conversationHtml($conv);
+?>
 
+<!--
+<h3>
+<span class="label label-primary"><i class='glyphicon glyphicon-comment'></i> Primary</span>
+<span class='pull-right muted'>xx-xx-xxx</span>
+</h3>
+
+<h3><span class="label label-default">Default blsbdwql qwfl qwf  wqf qw;f qw;f qw;f qw</span></h3>
+<h3><span class="label label-primary"><i class='glyphicon glyphicon-comment'></i> bla bla ?</span></h3>
+<h3><span class="label label-default">Il etait une fois Default</span></h3>
+-->
+
+
+<?php
 function conversationHtml(array $conv)
 {
     if (count($conv)<1) {
@@ -42,13 +54,20 @@ function conversationHtml(array $conv)
     foreach ($conv as $t => $v) {
         //echo $t;
         if (@$v['in']) {
-            $html[]=date("d/m/Y H:i", $t);
+            //$html[]=date("d/m/Y H:i", $t);
             $message = "<i class='glyphicon glyphicon-user'></i> " . $v['in'];
-            $html[]="<div class='alert alert-success'>$message</div>";
+            $html[]="<h3>";
+            $html[]="<span class='label label-primary'>$message</span>";
+            $html[]="<span class='pull-right small'>".date("d/m/Y H:i", $t)."</span>";
+            $html[]="</h3>";
         }
         if (@$v['out']) {
+
             $message = "<i class='glyphicon glyphicon-hand-right'></i> " . $v['out'];
-            $html[]="<div class='alert alert-info'>$message</div>";
+            $html[]="<h3>";
+            $html[]="<span class='label label-default'>$message</span>";
+            //$html[]="<span class='pull-right muted'>xx-xx-xxx</span>";
+            $html[]="</h3>";
         }
     }
 

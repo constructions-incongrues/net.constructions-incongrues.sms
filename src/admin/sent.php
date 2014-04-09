@@ -24,7 +24,7 @@ $q = $smspi->db->query($sql) or die( $smspi->db->error );
 
 echo "<table class='table table-condensed table-striped'>";
 echo "<thead>";
-//echo "<th>id</th>";  
+//echo "<th>id</th>";
 echo "<th>number</th>";
 echo "<th>message</th>";
 echo "<th width='130px'>sent</th>";
@@ -34,7 +34,7 @@ echo "<tbody>";
 while ($r = $q->fetch_assoc()) {
     //print_r( $r );
     echo "<tr id=" . $r['id'] . ">";
-    echo "<td title='" . $smspi->numberName($r['number']) . "'>" . $r['number'];
+    echo "<td title='" . $smspi->numberName($r['number']) . "'><a href='phonenumber.php?number=" . $r['number'] . "'>" . $r['number'] . "</a>";
     echo "<td>" . $r['message'];
     $r['time'] = str_replace(date('Y-m-d'), '', $r['time']);
     echo "<td width=150>" . $r['time'];
