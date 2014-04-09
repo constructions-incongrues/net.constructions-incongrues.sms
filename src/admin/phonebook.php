@@ -39,49 +39,6 @@ include "menu.html";
 
 </div>
 
-
-<?php
-/*
-$sql = "SELECT * FROM phonebook WHERE 1;";
-
-echo "<h1><i class='glyphicon glyphicon-book'></i> Phonebook</h1>";
-
-$q = $smspi->db->query($sql) or die( $smspi->db->error );
-
-echo "<table class='table table-striped table-condensed'>";
-echo "<thead>";
-//echo "<th>id</th>";
-echo "<th>number</th>";
-echo "<th>name</th>";
-echo "<th>calls</th>";
-echo "<th>lastcall</th>";
-echo "</thead>";
-echo "<tbody>";
-
-while ($r = $q->fetch_assoc()) {
-    echo "<tr id=".$r['id'].">";
-    //echo "<td>" . $r['id'];
-    echo "<td><a href='phonenumber.php?number=" . $r['phonenumber'] . "'>" . $r['phonenumber'] . "</a>";
-    echo "<td>" . $r['name'];
-    if (!$r['calls']) {
-        $r['calls']='';
-    }
-    echo "<td>" . $r['calls'];
-    if (preg_match("/0000/", $r['lastcall'])) {
-        $r['lastcall']='';
-    }
-    echo "<td>" . $r['lastcall'];
-    //echo "<td><a href=# onclick=test('".$r['phonenumber']."')><i class='glyphicon glyphicon-envelope'></i></a></td>";
-    //echo "<td><a href='conversation.php?number=".$r['phonenumber']."'><i class='glyphicon glyphicon-retweet'></i></a></td>";
-    echo "</tr>\n";
-}
-
-echo "</tbody>";
-echo "</table>";
-*/
-
-?>
-
 <div id='logs'></div>
 <div id='more'></div>
 
@@ -125,17 +82,16 @@ function display(r){
     tab.push("<thead>");
     tab.push("<th>name</th>");
     tab.push("<th width=150>number</th>");
-    tab.push("<th>calls</th>");
     tab.push("<th width=140>last call</th>");
-    //tab.push("<th>calls</th>");
+    tab.push("<th>calls</th>");
     tab.push("</thead>");
     tab.push("<tbody>");
     for(var i=0;i<r.length;i++){
         tab.push("<tr>");
         tab.push("<td><a href='phonenumber.php?number="+r[i].phonenumber+"'>"+r[i].name);
         tab.push("<td><a href='phonenumber.php?number="+r[i].phonenumber+"'>"+r[i].phonenumber);
-        tab.push("<td>"+r[i].calls);
         tab.push("<td>"+r[i].lastcall);
+        tab.push("<td>"+r[i].calls);
         tab.push("</tr>");
     }
     tab.push("</tbody>");

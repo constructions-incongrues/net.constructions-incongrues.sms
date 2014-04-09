@@ -38,7 +38,7 @@ echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
 
     <input type="hidden" id="id" value="<?php echo $r['id']?>">
     <input type="hidden" id="phonenumber" value="<?php echo $r['phonenumber']?>">
- 
+
     <div class="form-group">
     <label for="name">Name</label>
     <input type="text" class="form-control" id="name" placeholder="Enter name" value="<?php echo $r['name']?>">
@@ -62,10 +62,13 @@ echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
   </div>
 
   <hr />
-  
+
   <a href='#' onclick='sav()' class='btn btn-primary'><i class='glyphicon glyphicon-ok'></i> Save number</a>
   <a href='#' onclick='sms()' class='btn btn-default'><i class='glyphicon glyphicon-envelope'></i> Send a message</a>
+  <!--
   <a href='#' onclick='conv()' class='btn btn-default'><i class='glyphicon glyphicon-comment'></i> Read conversation</a>
+  -->
+  <a href='#' onclick='trash()' class='btn btn-danger pull-right' title=''><i class='glyphicon glyphicon-trash'></i> Del.</a>
 
 </form>
 
@@ -73,39 +76,45 @@ echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
 
 <h3><i class='glyphicon glyphicon-comment'></i> Conversation</h3>
 
+<!--
 <ul class='list-group'>
-
 <li><span class="label label-primary"><i class='glyphicon glyphicon-comment'></i> Primary</span></li>
-
 <li><span class="label label-default">Default blsbdwql qwfl qwf  wqf qw;f qw;f qw;f qw</span></li>
-
 <li><span class="label label-primary"><i class='glyphicon glyphicon-comment'></i> bla bla ?</span></li>
-
 <li><span class="label label-default">Il etait une fois Default</span></li>
-
 </ul>
+-->
 
 <div id='conv'><div class='alert'><?php echo $conversation?></div></div>
 
 <script>
 function sav(){
-    
+
     var p ={
         'do':'numberSave',
         'id':$('#id').val(),
         'name':$('#name').val(),
         'comment':$('#comment').val()
     };
-    
+    $('#more').html("Saving...");
     $('#more').load('controller.php',p,function(x){
         //try{ eval(x); }
         //catch(e){ alert(x); }
     });
 }
 
-function conv(){
-    //var num=$('#phonenumber').val();
-    document.location.href='conversation.php?number='+$('#phonenumber').val();
+function trash()
+{
+    if(!confirm("Delete this phone number ?"))return false;
+    var p={
+        'do':'numberDelete',
+        'id':$('#id').val()
+    }
+    $('#more').html("Deleting...");
+    $('#more').load('controller.php',p,function(x){
+        try{ eval(x); }
+        catch(e){ alert(x); }
+    });
 }
 
 function sms()

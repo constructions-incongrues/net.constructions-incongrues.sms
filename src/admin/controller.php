@@ -47,15 +47,22 @@ switch($_POST['do']) {
         exit;
         break;
 
+
     //Send a message to a given number
     //(actualy add the message to the queue )
     case 'numberTest':
-
-        //print_r($_POST);
-
         $id = $smspi->queue_add($_POST['number'], $_POST['body']);
         if ($id) {
             die("In queue : msg #$id");
+        } else {
+            die("Error");
+        }
+        break;
+
+    case 'numberDelete':
+        //print_r($_POST);
+        if ($smspi->numberDelete($_POST['id'])) {
+            die("document.location.href='phonebook.php';");
         } else {
             die("Error");
         }

@@ -72,6 +72,13 @@ if (is_array($dat) && count($dat)) {
         //We call the first word the 'command'
         $cmd = $words[0];
 
+        //redirection detection
+        preg_match("/\b(0[67][\d]{8})\b/", $r['body'], $o);
+        if ($o[1]) {
+            $redirection=$o[1];
+            $r['remote_number']=$o[1];
+        }
+
         $service = $smspi->serviceByName($cmd);
 
         echo "cmd=$cmd\n";
@@ -81,8 +88,12 @@ if (is_array($dat) && count($dat)) {
         if ($service) {
 
             $cc = new cURL();
-            //$URL = "http://127.0.0.1/sms/$cmd/?num=".$r['remote_number'] . "&body=" . $r['body']
-            $URL = "http://127.0.0.1/sms/src/services/".$service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
+
+            if (preg_match("/^http/", $service['url'])) {
+                $URL = $service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
+            } else {
+                $URL = "http://127.0.0.1/sms/src/services/".$service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
+            }
 
             $html = $cc->get($URL);//call the service
             $httpCode = $cc->httpCode();
@@ -103,6 +114,7 @@ if (is_array($dat) && count($dat)) {
             //$text = "Service not found";
             $smspi->log('warning', "Service $cmd not found");
         }
+
 
         if (!$smspi->queue_add($r['remote_number'], $text)) {
             $smspi->log('error', "Msg not added to the queue");

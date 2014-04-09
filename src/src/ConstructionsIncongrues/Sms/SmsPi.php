@@ -191,6 +191,26 @@ class SmsPi
     }
 
     /**
+     * Delete the given phoneNumber id
+     * @return bool [description]
+     */
+    public function numberDelete($id = 0)
+    {
+        $id*=1;
+
+        if (!$id) {
+            return false;
+        }
+
+        $sql = "DELETE FROM phonebook WHERE id='$id' LIMIT 1;";
+        $q = $this->db->query($sql) or $this->error($this->db->error);
+
+        return true;
+    }
+
+
+
+    /**
      * Return the blocked status as bool
      * @param  [type]  $phoneNumber [description]
      * @return boolean              [blocked]
