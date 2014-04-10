@@ -102,21 +102,17 @@ class SmsPi
 
 
     /**
-     * register a phone Number
+     * register a valid, french mobile phone Number
      * @param  string $phoneNumber [description]
      * @return bool              [description]
      */
     public function numberAdd($phoneNumber = "", $comment = "")
     {
-        $phoneNumber = trim($phoneNumber);
 
-        //correction du numero en ajoutant +33 si necessaire
-        if (preg_match("/^0[67][0-9]{8}$/", $phoneNumber)) {
-            $phoneNumber = preg_replace("/^0([67])/", "+33$1", $phoneNumber);
+        $phoneNumber=$this->numberCheck($phoneNumber);
+        if (!$phoneNumber) {
+            return false;
         }
-
-        //verification du format
-        //todo
 
         $sql = "INSERT INTO phonebook ( phonenumber, comment, registered ) ";
         $sql .= " VALUES ( '$phoneNumber', '" . $this->db->escape_string($comment) . "', NOW() ) ";
@@ -124,8 +120,37 @@ class SmsPi
 
         $this->db->query($sql) or $this->error($this->db->error);
 
-        return true;
+        return $phoneNumber;
     }
+
+
+    /**
+     * Check phone number
+     * Number should be in mobile, french format
+     * Number may be transformed from "06" to "+336"
+     * @param  string $phoneNumber [description]
+     * @return string $phoneNumber [description]
+     */
+    public function numberCheck($phoneNumber = "")
+    {
+        $phoneNumber = trim($phoneNumber);
+        //correction du numero en ajoutant +33 si necessaire
+        if (preg_match("/^0[67][0-9]{8}$/", $phoneNumber)) {
+            $phoneNumber = preg_replace("/^0([67])/", "+33$1", $phoneNumber);
+        }
+
+        //correction format long (0033)
+        if (preg_match("/^0033[67][0-9]{8}$/", $phoneNumber)) {
+            $phoneNumber = preg_replace("/^0033/", "+33", $phoneNumber);
+        }
+
+        // verification du format final '+33000000000'
+        if (!preg_match("/^\+33[67][\d]{8}$/", $phoneNumber)) {
+            return false;
+        }
+        return $phoneNumber;
+    }
+
 
     /**
      * Return the name of the owner of the given phoneNumber
@@ -219,7 +244,6 @@ class SmsPi
     }
 
 
-
     /**
      * Return the blocked status as bool
      * @param  [type]  $phoneNumber [description]
@@ -231,12 +255,19 @@ class SmsPi
         $this->db->query($sql) or $this->error($this->db->error);
     }
 
-    //this is a bit shitty
-    public function markAsRead($msgId)
+    /**
+     * this is a bit shitty, mark a inbox message as read (processed)
+     * @param  [type] $msgId [description]
+     * @return [type]        [description]
+     */
+    public function markAsRead($msgId = 0)
     {
-        $q = $this->db->query("UPDATE msg_in SET status='read' WHERE `i`=$msgId LIMIT 1;") or $this->error( $db->error);
+        $q = $this->db->query("UPDATE msg_in SET status='read' WHERE `i`=$msgId LIMIT 1;") or $this->error($db->error);
         return true;
     }
+
+
+
 
     /**
      * Detect gammu installation

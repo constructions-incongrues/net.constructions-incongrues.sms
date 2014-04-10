@@ -87,6 +87,7 @@ function display(r){
     tab.push("</thead>");
     tab.push("<tbody>");
     for(var i=0;i<r.length;i++){
+        if(!r[i].name)r[i].name="?"
         tab.push("<tr>");
         tab.push("<td><a href='phonenumber.php?number="+r[i].phonenumber+"'>"+r[i].name);
         tab.push("<td><a href='phonenumber.php?number="+r[i].phonenumber+"'>"+r[i].phonenumber);

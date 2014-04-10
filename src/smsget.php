@@ -73,9 +73,9 @@ if (is_array($dat) && count($dat)) {
         $cmd = $words[0];
 
         //redirection detection
-        preg_match("/\b(0[67][\d]{8})\b/", $r['body'], $o);
-        if ($o[1]) {
-            $redirection=$o[1];
+        preg_match("/\b((0|0033)[67][\d]{8})\b/", $r['body'], $o);
+        if ($smspi->numberCheck($o[1])) {
+            $o[1] = $smspi->numberCheck($o[1]);
             $smspi->numberAdd($o[1], "Added via " . $r['remote_number']);
             $r['remote_number']=$o[1];
         }
