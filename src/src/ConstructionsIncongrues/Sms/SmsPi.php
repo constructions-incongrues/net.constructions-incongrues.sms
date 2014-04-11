@@ -682,8 +682,17 @@ class SmsPi
         $WHERE=[];
         $WHERE[]=1;
 
+        if ($filter) {
+            if (preg_match("/^[0-9]+/", $filter)) {
+                $WHERE[]="phonenumber LIKE '%".$this->db->escape_string($filter)."%'";
+            } else {
+               $WHERE[]="(name LIKE '%".$this->db->escape_string($filter)."%' OR comment LIKE '%".$this->db->escape_string($filter)."%')";
+            }
+        }
+
         $sql = "SELECT * FROM phonebook ";
-        $sql.= "WHERE 1 LIMIT $limit;";
+        $sql.= " WHERE " . implode(" AND ", $WHERE);
+        $sql.= " ORDER BY name LIMIT $limit;";
 
         $q = $this->db->query($sql) or die( $this->db->error );
 

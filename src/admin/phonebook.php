@@ -17,32 +17,32 @@ header('Content-Type: text/html; charset=utf-8');
 include "menu.html";
 ?>
 
-
-<div class='form-inline'>
-
- <div class="form-group">
+<div class="form-group">
  <h2><i class='glyphicon glyphicon-book'></i> Phonebook</h2>
 </div>
+
+<div class='form-inline'>
 
  <div class="form-group">
     <label class="sr-only" for="searchstr">Search</label>
     <input type="text" class="form-control" id="searchstr" placeholder="Search">
   </div>
+<!--
+ <div class="form-group">
+    <label class="sr-only" for="limit">Limit</label>
+    <input type="text" class="form-control" id="limit" placeholder="Limit">
+  </div>
+-->
+    <div class="form-group pull-right">
+    <a href='#' class='btn btn-primary' onclick='addNumber()'><i class='glyphicon glyphicon-plus-sign'></i> New phone number</a>
+  </div>
 
-
-<div class="btn-group pull-right">
-  <button type="button" class="btn btn-default"><i class='glyphicon glyphicon-list'></i> All</button>
-    <button type="button" class="btn btn-default">Errors</button>
-  <button type="button" class="btn btn-default">Warning</button>
-  <button type="button" class="btn btn-default">Notice</button>
-</div>
 
 </div>
 
 <div id='logs'></div>
 <div id='more'></div>
 
-<a href='#' class='btn btn-default' onclick='addNumber()'><i class='glyphicon glyphicon-plus-sign'></i> New phone number</a>
 
 <script>
 function addNumber()
@@ -59,13 +59,15 @@ function addNumber()
 function getNums(){
     var p={
         'do':'phonebook',
-        'filter':$('#searchstr').val()
+        'filter':$('#searchstr').val(),
+        'limit':30
     };
     $('#logs').html("Loading...");
     $('#logs').load('controller.php', p, function(x){
         try{
             o=eval(x);
             display(o);
+            $('#searchstr').focus();
         }
         catch(e){
             alert(x);
@@ -81,6 +83,7 @@ function display(r){
     tab.push("<table class='table table-condensed table-striped'>");
     tab.push("<thead>");
     tab.push("<th>name</th>");
+    tab.push("<th>comment</th>");
     tab.push("<th width=150>number</th>");
     tab.push("<th width=140>last call</th>");
     tab.push("<th>calls</th>");
@@ -90,6 +93,7 @@ function display(r){
         if(!r[i].name)r[i].name="?"
         tab.push("<tr>");
         tab.push("<td><a href='phonenumber.php?number="+r[i].phonenumber+"'>"+r[i].name);
+        tab.push("<td><i class=muted>"+r[i].comment);
         tab.push("<td><a href='phonenumber.php?number="+r[i].phonenumber+"'>"+r[i].phonenumber);
         tab.push("<td>"+r[i].lastcall);
         tab.push("<td>"+r[i].calls);
@@ -107,6 +111,7 @@ $( document ).ready(function() {
         getNums();
     });
     getNums();
+    $('#searchstr').focus();
 });
 
 </script>

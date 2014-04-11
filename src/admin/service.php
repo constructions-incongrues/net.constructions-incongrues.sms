@@ -37,12 +37,12 @@ $r=$smspi->service($_GET['id']);
     <label for="comment">Comment</label>
     <input type="text" class="form-control" id="comment" placeholder="Enter comment" value="<?php echo $r['comment']?>">
   </div>
-<!--
+
   <div class="form-group">
-    <label for="lastcall">Last call</label>
-    <input type="text" class="form-control" id="lastcall" placeholder="Last call" readonly value="<?php echo $r['lastcall']?>">
+    <label for="lastcall">Calls</label>
+    <input type="text" class="form-control" id="lastcall" placeholder="Calls" readonly value="<?php echo $r['calls']?>">
   </div>
--->
+
   <hr />
 
   <a href='#' onclick='sav()' class='btn btn-primary'><i class='glyphicon glyphicon-ok'></i> Save service details</a>

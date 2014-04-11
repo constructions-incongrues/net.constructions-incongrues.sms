@@ -33,11 +33,6 @@ if (!$r) {
     die();
 }
 
-// get conversation
-$conv=$smspi->conversation($number);
-
-$conversation=conversationHtml($conv);
-
 echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
 ?>
 
@@ -81,19 +76,19 @@ echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
 
 <div id='more'></div>
 
-<h3><i class='glyphicon glyphicon-comment'></i> <a href=#>Conversation</a></h3>
 
-<!--
-<ul class='list-group'>
-<li><span class="label label-primary"><i class='glyphicon glyphicon-comment'></i> Primary</span></li>
-<li><span class="label label-default">Default blsbdwql qwfl qwf  wqf qw;f qw;f qw;f qw</span></li>
-<li><span class="label label-primary"><i class='glyphicon glyphicon-comment'></i> bla bla ?</span></li>
-<li><span class="label label-default">Il etait une fois Default</span></li>
-</ul>
--->
+<?php
+// get conversation
+$conv=$smspi->conversation($number);
 
-<div id='conv'><div class='alert'><?php echo $conversation?></div></div>
 
+if (count($conv)) {
+    echo "<hr />";
+    echo "<h3><i class='glyphicon glyphicon-comment'></i> <a href=#>Conversation</a></h3>";
+    echo "<div id='conv'><div class='alert'>" . conversationHtml($conv) . "</div>";
+}
+?>
+</div>
 <script>
 function sav(){
 
@@ -162,7 +157,7 @@ function conversationHtml(array $conv)
         }
         if (@$v['out']) {
 
-            $message = "<i class='glyphicon glyphicon-hand-right'></i> " . $v['out'];
+            $message = "<i class='glyphicon glyphicon-cog'></i> " . $v['out'];
             $html[]="<h3>";
             $html[]="<span class='label label-default'>$message</span>";
             //$html[]="<span class='pull-right muted'>xx-xx-xxx</span>";

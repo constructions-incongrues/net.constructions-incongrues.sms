@@ -78,7 +78,7 @@ switch($_POST['do']) {
 
     case 'phonebook':
         //print_r($_POST);
-        $dat = $smspi->phoneBook($_POST['filter'], 100);
+        $dat = $smspi->phoneBook($_POST['filter'], $_POST['limit']);
         echo json_encode($dat);
         exit;
         break;
