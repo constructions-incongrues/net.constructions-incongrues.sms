@@ -11,11 +11,13 @@ header('Content-Type: text/html; charset=utf-8');
 include "menu.html";
 ?>
 
-<h2><i class='glyphicon glyphicon-list'></i> Services</h2>
+<h2><i class='glyphicon glyphicon-list'></i> Services
+<a href=# class='btn btn-primary pull-right' onclick='newService()'><i class="glyphicon glyphicon-plus"></i> New service</a>
+
+</h2>
 
 <div id='more'></div>
 
-<a href=# class='btn btn-default' onclick='newService()'><i class="glyphicon glyphicon-plus"></i> New service</a>
 <script>
 function newService()
 {

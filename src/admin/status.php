@@ -38,7 +38,7 @@ $gammu = new Gammu();
 
 
 //php version
-echo "<div class='alert alert-success'>$ICO_OK PHP Version : " . phpversion() . "</div>";
+//echo "<div class='alert alert-success'>$ICO_OK PHP Version : " . phpversion() . "</div>";
 
 if ($smspi->gammuDetect()) {
     $gammu_version = trim($gammu->Version());
@@ -69,7 +69,7 @@ if ($smspi->modemWritable()) {
 
 
 if ($smspi->isCurlInstalled()) {
-    echo "<div class='alert alert-success'>$ICO_OK cURL is installed on this server</div>";
+    //echo "<div class='alert alert-success'>$ICO_OK cURL is installed on this server</div>";
 } else {
     echo "<div class='alert alert-danger'>$ICO_NOK cURL is NOT installed on this server</div>";
 }
@@ -82,7 +82,7 @@ if ($smspi->isCurlInstalled()) {
 if ($smspi->db->connect_errno) {
     echo "<div class='alert alert-danger'>Failed to connect: (".$smspi->db->connect_errno.") ".$smspi->db->connect_error."</div>";
 } else {
-    echo "<div class='alert alert-success'>$ICO_OK DB Connection ok</div>";
+    //echo "<div class='alert alert-success'>$ICO_OK DB Connection ok</div>";
 
     //Check tables//
 
