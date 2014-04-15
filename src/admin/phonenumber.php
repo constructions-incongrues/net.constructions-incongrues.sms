@@ -52,6 +52,11 @@ echo "<h1><i class='glyphicon glyphicon-book'></i> $number</h1>";
   </div>
 
   <div class="form-group">
+    <label for="email">Email</label>
+    <input type="text" class="form-control" id="email" placeholder="Email" value="<?php echo $r['email']?>">
+  </div>
+
+  <div class="form-group">
     <label for="lastcall">Last call</label>
     <input type="text" class="form-control" id="lastcall" placeholder="Last call" readonly value="<?php echo $r['lastcall']?>">
   </div>
@@ -96,7 +101,8 @@ function sav(){
         'do':'numberSave',
         'id':$('#id').val(),
         'name':$('#name').val(),
-        'comment':$('#comment').val()
+        'comment':$('#comment').val(),
+        'email':$('#email').val()
     };
     $('#more').html("Saving...");
     $('#more').load('controller.php',p,function(x){

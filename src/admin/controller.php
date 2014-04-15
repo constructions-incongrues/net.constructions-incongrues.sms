@@ -39,7 +39,7 @@ switch($_POST['do']) {
     //Save phonenumber informations
     case 'numberSave':
 
-        if ($smspi->numberSave($_POST['id'], $_POST['name'], $_POST['comment'])) {
+        if ($smspi->numberSave($_POST['id'], $_POST['name'], $_POST['comment'], $_POST['email'])) {
             echo "<div class='alert alert-success'>Number Saved!</div>";
         } else {
             echo "Error saving number\n";

@@ -182,7 +182,7 @@ class SmsPi
      * @param  string  $comment [description]
      * @return [type]           [description]
      */
-    public function numberSave($id = 0, $name = '', $comment = '')
+    public function numberSave($id = 0, $name = '', $comment = '', $email = '')
     {
 
         $id*=1;
@@ -192,7 +192,8 @@ class SmsPi
 
         $sql = "UPDATE phonebook SET ";
         $sql.= "name='".$this->db->escape_string($name)."', ";
-        $sql.= "comment='".$this->db->escape_string($comment)."' ";
+        $sql.= "comment='".$this->db->escape_string($comment)."', ";
+        $sql.= "email='".$this->db->escape_string($email)."' ";
         $sql.= "WHERE id=$id LIMIT 1;";
 
         //$q = $this->db->query($sql) or die($sql);
