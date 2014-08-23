@@ -1,64 +1,19 @@
 <html>
 <head>
-<title>SMS Inbox</title>
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="./bootstrap-3.1.1/css/bootstrap.min.css">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="./bootstrap-3.1.1/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="./index.css">
-
 <!-- Latest compiled and minified JavaScript -->
 <script src="./js/jquery-1.11.0.min.js"></script>
 <script src="./js/jquery.tablesorter.min.js"></script>
 <script src="./bootstrap-3.1.1/js/bootstrap.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 </head>
 
 <body>
-
-
-<div class='container' id='main'>
-Please wait...
+<div class='container jumbotron' id='main'>
+<h1>Please wait...</h1>
 </div>
 
 <script>
-//var obj;//minidebug
-$(document).ready(function()
-{
-  document.location.href='status.php';
-  /*
-	$(".navbar li").click(function(o){
-		obj=o;
-		//console.log(o);
-		$(".navbar li").removeClass("active");
-		$(o.currentTarget).addClass("active");
-		//var id = o.currentTarget.id;
-		switch(o.currentTarget.id){
-
-      case 'btn_inbox':
-        $('#main').load("inbox.php"); break;
-			
-			case 'btn_logs':
-				$('#main').load("logs.php"); break;
-			
-			case 'btn_status':
-				$('#main').load("status.php"); break;
-			
-			case 'btn_services':
-				$('#main').load("services.php"); break;
-			
-			case 'btn_phonebook':
-				$('#main').load("phonebook.php"); break;
-			
-			default:
-				$('#main').html( o.currentTarget.id );
-		}
-	});
-	*/
+$(document).ready(function(){
+  document.location.href='./home/';
 });
-
-
 </script>

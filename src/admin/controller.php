@@ -18,6 +18,7 @@ $smspi = new SmsPi($config);
 switch($_POST['do']) {
 
     //Create a new phone number
+    /*
     case 'numberAdd':
         //print_r( $_POST );
 
@@ -32,10 +33,11 @@ switch($_POST['do']) {
             die("Erreur: Le format doit etre : +33xxxxxxxxx");
         }
         if ($smspi->numberAdd($_POST['number'])) {
-            die("document.location.href='phonenumber.php?number=".$_POST['number']."';");
+            die("document.location.href='?number=".$_POST['number']."';");
         }
         break;
-
+    */
+   
     //Save phonenumber informations
     case 'numberSave':
 
@@ -75,14 +77,7 @@ switch($_POST['do']) {
         echo json_encode($dat);
         exit;
         break;
-
-    case 'phonebook':
-        //print_r($_POST);
-        $dat = $smspi->phoneBook($_POST['filter'], $_POST['limit']);
-        echo json_encode($dat);
-        exit;
-        break;
-
+   
     case 'services':// list of registered services
         $dat = $smspi->serviceList();
         echo json_encode($dat);
@@ -101,8 +96,11 @@ switch($_POST['do']) {
     case 'serviceSave':
         $_POST['id']*=1;
         $id = $smspi->serviceSave($_POST['id'], $_POST['name'], $_POST['url'], $_POST['comment']);
-        die("document.location.href='?id=".$_POST['id']."';");
+        if ($id) {
+            die("document.location.href='?id=".$_POST['id']."';");
+        }
         break;
+
 
 
     default:

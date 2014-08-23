@@ -13,7 +13,7 @@ use ConstructionsIncongrues\Sms\SmsPi;
 $config = json_decode(file_get_contents(__DIR__.'/../config.json'));
 $smspi = new SmsPi($config);
 
-include "menu.html";
+include "menu.php";
 
 $number = trim(@$_GET['number']);
 $number = preg_replace("/^33/", '+33', $number);

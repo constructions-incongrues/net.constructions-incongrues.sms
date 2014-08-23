@@ -156,7 +156,8 @@ class Gammu
                 }
                 //Buffer BODY
                 if (trim($r[$i])) {
-                    $data[$folder][$fid]['body'].=trim($r[$i]);
+                    print_r($r);
+                    @$data[$folder][$fid]['body'].=trim($r[$i]);
                 }
             }
             if (!$folder) {

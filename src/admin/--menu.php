@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>SMS Admin</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="./bootstrap-3.1.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="./bootstrap-3.1.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="./index.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="./js/jquery-1.11.0.min.js"></script>
+<script src="./js/jquery.tablesorter.min.js"></script>
+<script src="./bootstrap-3.1.1/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+<style>
+.pad4{padding:10px;}
+</style>
+
+<!-- Top Menu -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <!--
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar">q</span>
+        <span class="icon-bar">b</span>
+        <span class="icon-bar">v</span>
+      </button>
+      -->
+
+      <a class="navbar-brand" href="status.php">Super SMS</a>
+
+      <ul class="nav navbar-nav">
+
+        <li id='btn_services'>
+          <a href="services.php" ><i class='glyphicon glyphicon-list'></i> Services</a>
+        </li>
+
+        <li id='btn_logs'>
+          <a href="logs.php"><i class='glyphicon glyphicon-list'></i> Logs</a>
+        </li>
+
+        <li id='btn_inbox'>
+          <a href="inbox.php"><i class='glyphicon glyphicon-import'></i> In</a>
+        </li>
+
+        <li id='btn_inbox'>
+          <a href="sent.php"><i class='glyphicon glyphicon-export'></i> Out</a>
+        </li>
+
+        <li id='btn_inbox'>
+          <a href="queue.php"><i class='glyphicon glyphicon-export'></i> Queue</a>
+        </li>
+
+
+        <li id='btn_phonebook'>
+          <a href="phonebook.php"><i class='glyphicon glyphicon-book'></i> Phonebook</a>
+        </li>
+
+
+      </ul>
+
+    </div>
+
+  </div>
+</nav>
+
+<div class='container' id='main'>

@@ -1,0 +1,24 @@
+<?php
+//test api
+
+echo "<pre>";
+
+
+
+print_r( apache_get_modules() );
+
+//in_array('mod_rewrite', apache_get_modules());
+
+/*
+// Requests from the same server don't have a HTTP_ORIGIN header
+if (!array_key_exists('HTTP_ORIGIN', $_SERVER)) {
+    $_SERVER['HTTP_ORIGIN'] = $_SERVER['SERVER_NAME'];
+}
+
+try {
+    $API = new MyAPI($_REQUEST['request'], $_SERVER['HTTP_ORIGIN']);
+    echo $API->processAPI();
+} catch (Exception $e) {
+    echo json_encode(array('error' => $e->getMessage()));
+}
+*/

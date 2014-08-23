@@ -38,6 +38,7 @@ if (!count(@$response['inbox'])) {
     //$smspi->log( 'notice' , "No SMS" );
     //die("No SMS\n");
 } else {
+    
     // Saving sms's
     foreach ($response['inbox'] as $k => $v) {
         //skip multipart messages//
@@ -47,6 +48,14 @@ if (!count(@$response['inbox'])) {
         $smspi->saveSms($v);
         //print_r( $v );
     }
+
+    /* Clear all SMS's on the sim */
+    if (count(@$response['inbox'])) {
+        echo "ClearAllSms();\n";
+        $gammu->ClearAllSms();
+        echo "Sim Cleared\n";
+    }
+
 }
 
 
@@ -58,7 +67,7 @@ echo count($dat) . " unread message(s)\n";
 echo "--------------------------\n";
 if (is_array($dat) && count($dat)) {
 
-    $smspi->log('notice', count($dat) . " SMS");
+    //$smspi->log('notice', count($dat) . " SMS");
 
     foreach ($dat as $k => $r) {
 
@@ -73,17 +82,24 @@ if (is_array($dat) && count($dat)) {
         $cmd = $words[0];
 
         //redirection detection
-        preg_match("/\b((0|0033)[67][\d]{8})\b/", $r['body'], $o);
-        if ($smspi->numberCheck($o[1])) {
+        if (preg_match("/\b((0|0033)[67][\d]{8})\b/", $r['body'], $o)) {
             $o[1] = $smspi->numberCheck($o[1]);
             $smspi->numberAdd($o[1], "Added via " . $r['remote_number']);
             $r['remote_number']=$o[1];
         }
-
+        
         $service = $smspi->serviceByName($cmd);
 
         echo "cmd=$cmd\n";
 
+
+        if (!$service) {
+            $service=$smspi->serviceByName('default');
+            if (!$service) {
+                 $smspi->log('error', "Service 'default' not found. Please fix");
+                 exit;
+            }
+        }
 
         //Todo : big things here
         if ($service) {
@@ -92,8 +108,15 @@ if (is_array($dat) && count($dat)) {
 
             if (preg_match("/^http/", $service['url'])) {
                 $URL = $service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
+                //$URL = "http://127.0.0.1/sms/src/services/".$service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
             } else {
-                $URL = "http://127.0.0.1/sms/src/services/".$service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
+                // error
+                $smspi->log('error', "Url format error : ".print_r($service, true));
+                continue;
+                //$URL = "http://127.0.0.1/sms/src/services/".$service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
+
+                //$URL = $service['url']."/?num=".$r['remote_number']."&body=".urlencode($r['body']);
+                //echo "URL=$URL\n";
             }
 
             $html = $cc->get($URL);//call the service
@@ -110,15 +133,20 @@ if (is_array($dat) && count($dat)) {
                 $smspi->log('error', "SMS Error $httpCode");
             }
             $smspi->serviceUpdate($service['id']);
-        } else {
-            $text = $smspi->error_message();
+        
+        } else { // service not found
+            //$text = $smspi->error_message();
             //$text = "Service not found";
-            $smspi->log('warning', "Service $cmd not found");
+            $smspi->log('error', "This should not happen! cmd=$cmd service=$service");
         }
 
 
         if (!$smspi->queue_add($r['remote_number'], $text)) {
-            $smspi->log('error', "Msg not added to the queue");
+            if ($text) {
+                $smspi->log('error', "Msg not added to the queue");
+            } else {
+                $smspi->log('error', "No text");
+            }
         }
 
         if (!$smspi->markAsRead($r['i'])) {
@@ -130,20 +158,25 @@ if (is_array($dat) && count($dat)) {
 
 
 
+
+
+
+
+
 // Get the queue and send the replies //
 
 $queue = $smspi->queue_get();
 
-echo count( $queue ) . " msg(s) in the queue\n";
+echo count($queue) . " msg(s) in the queue\n";
 
 foreach ($queue as $q_id => $r) {
     $text = $r['q_body'];
     //Send the computed reply//
-    echo "reply : $text\n";
+    echo "reply to ".$r['q_number']." : $text\n";
 
     $response = '';
     if ($text) {
-        $gammu->Send($r['q_number'], $text, $response );
+        $gammu->Send($r['q_number'], $text, $response);
     }
     echo "$response\n";
 
@@ -153,23 +186,15 @@ foreach ($queue as $q_id => $r) {
         //error_log("$response\n" , 3 , "errors.txt");
 
     } else {
-        //Log as sent
+        // Log as sent
         $smspi->logSent($r['q_number'], $text, $response);
         $smspi->queue_del($q_id);
     }
-
 }
 
 
 
 
-
-
-/* Clear all SMS's */
-if (count(@$response['inbox'])) {
-    echo "ClearAllSms();\n";
-    $gammu->ClearAllSms();
-}
 
 
 
